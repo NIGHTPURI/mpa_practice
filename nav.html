@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공통 네비게이션 바 컴포넌트</title>
+    <!-- Pretendard 고해상도 한글 본문 폰트 적용 -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0B2545',    // 딥 블루 (신뢰감, 차분함)
+                        secondary: '#134074',  // 미디엄 블루
+                        offwhite: '#FAF9F5',   // 오프 화이트
+                        warmgray: '#EAE7E1',   // 따뜻한 그레이
+                        accent: '#E07A5F',     // 담백한 오렌지/레드
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #FAF9F5;
+        }
+        /* 드롭다운 메뉴 부드러운 트랜지션용 커스텀 스타일 */
+        .mobile-menu-transition {
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-offwhite/50">
+
+    <!-- 임시 배경 콘텐츠 (네비게이션 블러 효과 확인용 데모 영역) -->
+    <div class="absolute inset-0 z-0 flex flex-col items-center justify-center text-center p-6 pointer-events-none">
+        <p class="text-xs text-primary/40 font-mono uppercase tracking-widest mb-2">Navigation Component Demo</p>
+        <h1 class="text-xl font-bold text-primary/30">스크롤하거나 화면을 줄여서 헤더 블러와 햄버거 메뉴를 테스트해보세요.</h1>
+    </div>
+
+    <!-- ==========================================
+         [복사 시작 영역] 공통 네비게이션 바 컴포넌트 
+         ========================================== -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-offwhite/90 backdrop-blur-md border-b border-warmgray/40 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between relative">
+            
+            <!-- 로고 및 홈 링크 -->
+            <a href="index.html" class="flex items-center space-x-2 text-primary font-bold tracking-tight text-sm select-none">
+                <span class="w-2.5 h-2.5 bg-primary rounded-full inline-block"></span>
+                <span>PARK MIR.</span>
+            </a>
+
+            <!-- 데스크톱 메뉴 링크 (화면 크기 md 이상에서 표시됨) -->
+            <!-- * 여러 페이지 파일로 연동 시 각각 index.html, about.html, synergy.html 등으로 경로를 직접 편집하여 사용 가능합니다. -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-primary/70">
+                <a href="index.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    소개
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="synergy.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    5대 협업 시너지
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="vibe.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    취향과 에세이
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="contact.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    연락하기
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+            </nav>
+
+            <!-- 우측 행동 유도 버튼 (커피챗 제안) -->
+            <div class="hidden md:block">
+                <a href="contact.html" class="px-4 py-2 bg-primary text-offwhite rounded-lg text-xs font-semibold hover:bg-secondary transition-all duration-200 shadow-sm active:scale-95">
+                    커피챗 제안하기
+                </a>
+            </div>
+
+            <!-- 모바일용 햄버거 메뉴 버튼 (화면 크기 md 미만에서 표시됨) -->
+            <div class="flex items-center md:hidden">
+                <button id="mobile-menu-btn" type="button" class="text-primary hover:text-secondary focus:outline-none p-2 rounded-lg hover:bg-primary/5 transition-colors" aria-label="메뉴 열기" aria-expanded="false">
+                    <svg class="w-6 h-6 transition-transform duration-300" id="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 햄버거 상단 라인 -->
+                        <path id="line1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" class="origin-center transition-transform duration-200"></path>
+                        <!-- 햄버거 중단 라인 -->
+                        <path id="line2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" class="transition-opacity duration-200"></path>
+                        <!-- 햄버거 하단 라인 -->
+                        <path id="line3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16" class="origin-center transition-transform duration-200"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 모바일 드롭다운 메뉴 (기본 닫힘 상태) -->
+        <div id="mobile-menu" class="md:hidden max-h-0 opacity-0 overflow-hidden bg-offwhite border-b border-warmgray/40 mobile-menu-transition">
+            <div class="px-6 py-4 space-y-3.5 flex flex-col text-xs font-semibold text-primary/80">
+                <a href="index.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>소개</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="synergy.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>5대 협업 시너지</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="vibe.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>취향과 에세이</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="contact.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>연락하기</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <div class="pt-2">
+                    <a href="contact.html" class="w-full py-3 bg-primary text-offwhite rounded-xl text-center font-bold shadow-sm hover:bg-secondary transition-colors block">
+                        💌 커피챗 제안하기
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            // 햄버거 메뉴 각 라인 엘리먼트 (아이콘 X 변환용)
+            const line1 = document.getElementById('line1');
+            const line2 = document.getElementById('line2');
+            const line3 = document.getElementById('line3');
+
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                
+                // 버튼 웹 접근성 사양 적용
+                menuBtn.setAttribute('aria-expanded', isMenuOpen);
+
+                if (isMenuOpen) {
+                    // 메뉴 열기
+                    mobileMenu.classList.remove('max-h-0', 'opacity-0');
+                    mobileMenu.classList.add('max-h-[380px]', 'opacity-100');
+                    
+                    // 햄버거 아이콘 -> X자로 변경 애니메이션
+                    line1.setAttribute('transform', 'rotate(45 12 12) translate(0 0)');
+                    line1.setAttribute('d', 'M6 6l12 12');
+                    line2.style.opacity = '0';
+                    line3.setAttribute('transform', 'rotate(-45 12 12) translate(0 0)');
+                    line3.setAttribute('d', 'M6 18L18 6');
+                } else {
+                    // 메뉴 닫기
+                    mobileMenu.classList.remove('max-h-[380px]', 'opacity-100');
+                    mobileMenu.classList.add('max-h-0', 'opacity-0');
+                    
+                    // X자 -> 원래 햄버거 아이콘으로 환원
+                    line1.removeAttribute('transform');
+                    line1.setAttribute('d', 'M4 6h16');
+                    line2.style.opacity = '1';
+                    line3.removeAttribute('transform');
+                    line3.setAttribute('d', 'M4 18h16');
+                }
+            }
+
+            // 터치 및 클릭 이벤트 리스너 등록
+            menuBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 메뉴 외부를 터치/클릭할 경우 활성화된 모바일 메뉴를 부드럽게 닫는 보강 로직
+            document.addEventListener('click', function (event) {
+                if (isMenuOpen && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+                    toggleMenu();
+                }
+            });
+
+            // 모바일 메뉴 링크 터치/클릭 시에도 닫히도록 지원
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (isMenuOpen) toggleMenu();
+                });
+            });
+        });
+    </script>
+    <!-- ==========================================
+         [복사 끝 영역] 공통 네비게이션 바 컴포넌트 
+         ========================================== -->
+
+</body>
+</html>

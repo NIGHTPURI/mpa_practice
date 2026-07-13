@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소개 | 러닝메이트 박미르</title>
+    <!-- Pretendard 고해상도 한글 본문 폰트 적용 -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0B2545',    // 딥 블루 (신뢰감, 차분함)
+                        secondary: '#134074',  // 미디엄 블루
+                        offwhite: '#FAF9F5',   // 오프 화이트
+                        warmgray: '#EAE7E1',   // 따뜻한 그레이
+                        accent: '#E07A5F',     // 담백한 오렌지/레드
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #FAF9F5;
+        }
+        /* 드롭다운 메뉴 부드러운 트랜지션용 커스텀 스타일 */
+        .mobile-menu-transition {
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-in-out;
+        }
+        /* 확정 네비게이션 바의 임시 배경 텍스트가 실제 소개 페이지에서 겹쳐 보이지 않도록 숨김 처리 */
+        .pointer-events-none.absolute.inset-0.z-0 {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-offwhite/50 overflow-x-hidden">
+
+    <!-- ==========================================
+         [복사 시작 영역] 공통 네비게이션 바 컴포넌트 
+         ========================================== -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-offwhite/90 backdrop-blur-md border-b border-warmgray/40 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between relative">
+            
+            <!-- 로고 및 홈 링크 -->
+            <a href="index.html" class="flex items-center space-x-2 text-primary font-bold tracking-tight text-sm select-none">
+                <span class="w-2.5 h-2.5 bg-primary rounded-full inline-block"></span>
+                <span>PARK MIR.</span>
+            </a>
+
+            <!-- 데스크톱 메뉴 링크 (화면 크기 md 이상에서 표시됨) -->
+            <!-- * 여러 페이지 파일로 연동 시 각각 index.html, about.html, synergy.html 등으로 경로를 직접 편집하여 사용 가능합니다. -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-primary/70">
+                <a href="index.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    소개
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="synergy.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    5대 협업 시너지
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="vibe.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    취향과 에세이
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="contact.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    연락하기
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+            </nav>
+
+            <!-- 우측 행동 유도 버튼 (커피챗 제안) -->
+            <div class="hidden md:block">
+                <a href="contact.html" class="px-4 py-2 bg-primary text-offwhite rounded-lg text-xs font-semibold hover:bg-secondary transition-all duration-200 shadow-sm active:scale-95">
+                    커피챗 제안하기
+                </a>
+            </div>
+
+            <!-- 모바일용 햄버거 메뉴 버튼 (화면 크기 md 미만에서 표시됨) -->
+            <div class="flex items-center md:hidden">
+                <button id="mobile-menu-btn" type="button" class="text-primary hover:text-secondary focus:outline-none p-2 rounded-lg hover:bg-primary/5 transition-colors" aria-label="메뉴 열기" aria-expanded="false">
+                    <svg class="w-6 h-6 transition-transform duration-300" id="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 햄버거 상단 라인 -->
+                        <path id="line1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" class="origin-center transition-transform duration-200"></path>
+                        <!-- 햄버거 중단 라인 -->
+                        <path id="line2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" class="transition-opacity duration-200"></path>
+                        <!-- 햄버거 하단 라인 -->
+                        <path id="line3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16" class="origin-center transition-transform duration-200"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 모바일 드롭다운 메뉴 (기본 닫힘 상태) -->
+        <div id="mobile-menu" class="md:hidden max-h-0 opacity-0 overflow-hidden bg-offwhite border-b border-warmgray/40 mobile-menu-transition">
+            <div class="px-6 py-4 space-y-3.5 flex flex-col text-xs font-semibold text-primary/80">
+                <a href="index.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>소개</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="synergy.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>5대 협업 시너지</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="vibe.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>취향과 에세이</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="contact.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>연락하기</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <div class="pt-2">
+                    <a href="contact.html" class="w-full py-3 bg-primary text-offwhite rounded-xl text-center font-bold shadow-sm hover:bg-secondary transition-colors block">
+                        💌 커피챗 제안하기
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            // 햄버거 메뉴 각 라인 엘리먼트 (아이콘 X 변환용)
+            const line1 = document.getElementById('line1');
+            const line2 = document.getElementById('line2');
+            const line3 = document.getElementById('line3');
+
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                
+                // 버튼 웹 접근성 사양 적용
+                menuBtn.setAttribute('aria-expanded', isMenuOpen);
+
+                if (isMenuOpen) {
+                    // 메뉴 열기
+                    mobileMenu.classList.remove('max-h-0', 'opacity-0');
+                    mobileMenu.classList.add('max-h-[380px]', 'opacity-100');
+                    
+                    // 햄버거 아이콘 -> X자로 변경 애니메이션
+                    line1.setAttribute('transform', 'rotate(45 12 12) translate(0 0)');
+                    line1.setAttribute('d', 'M6 6l12 12');
+                    line2.style.opacity = '0';
+                    line3.setAttribute('transform', 'rotate(-45 12 12) translate(0 0)');
+                    line3.setAttribute('d', 'M6 18L18 6');
+                } else {
+                    // 메뉴 닫기
+                    mobileMenu.classList.remove('max-h-[380px]', 'opacity-100');
+                    mobileMenu.classList.add('max-h-0', 'opacity-0');
+                    
+                    // X자 -> 원래 햄버거 아이콘으로 환원
+                    line1.removeAttribute('transform');
+                    line1.setAttribute('d', 'M4 6h16');
+                    line2.style.opacity = '1';
+                    line3.removeAttribute('transform');
+                    line3.setAttribute('d', 'M4 18h16');
+                }
+            }
+
+            // 터치 및 클릭 이벤트 리스너 등록
+            menuBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 메뉴 외부를 터치/클릭할 경우 활성화된 모바일 메뉴를 부드럽게 닫는 보강 로직
+            document.addEventListener('click', function (event) {
+                if (isMenuOpen && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+                    toggleMenu();
+                }
+            });
+
+            // 모바일 메뉴 링크 터치/클릭 시에도 닫히도록 지원
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (isMenuOpen) toggleMenu();
+                });
+            });
+        });
+    </script>
+    <!-- ==========================================
+         [복사 끝 영역] 공통 네비게이션 바 컴포넌트 
+         ========================================== -->
+
+    <!-- Hero Section -->
+    <section class="min-h-screen pt-24 pb-12 flex flex-col justify-between px-6 max-w-6xl mx-auto relative" id="hero">
+        <div class="my-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Hero Left: Branding text and Personal info card -->
+            <div class="lg:col-span-7 space-y-6 z-10">
+                <div class="inline-flex items-center space-x-2 bg-primary/5 border border-primary/10 px-3.5 py-1 rounded-full text-[11px] font-semibold text-primary tracking-wide">
+                    <span>👋 안녕하세요, 함께 몰입하고 완주할 동료를 찾고 있습니다.</span>
+                </div>
+                
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary leading-tight tracking-tight">
+                    호기심과 <br class="hidden sm:inline">
+                    긍정적인 리액션으로 <br>
+                    시너지를 내는 <span class="border-b-2 border-accent/85 pb-1">러닝메이트</span>
+                </h1>
+                
+                <p class="text-xs sm:text-sm text-primary/70 leading-relaxed max-w-xl font-normal">
+                    유연하고 차분한 협업 속에서 단단한 결과를 내는 것을 선호합니다.<br>
+                    동료의 작은 의견도 귀담아듣고, 모호하고 까다로운 문제는 끝까지 분석해 해결하는 신뢰할 수 있는 든든한 파트너가 되어 드립니다.
+                </p>
+                
+                <!-- Expanded Personal Info Card (No text cutting) -->
+                <div class="p-5 bg-white border border-warmgray rounded-2xl flex flex-col sm:flex-row gap-4 max-w-xl w-full shadow-sm">
+                    <div class="flex items-center space-x-3.5 shrink-0">
+                        <div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-xl">🔭</div>
+                        <div class="whitespace-nowrap">
+                            <h4 class="text-sm font-bold text-primary">박미르 (Mir Park)</h4>
+                            <p class="text-[11px] text-primary/60 font-medium">컴퓨터소프트웨어공학부</p>
+                        </div>
+                    </div>
+                    <div class="h-px sm:h-10 sm:w-px bg-warmgray/60 self-stretch my-auto"></div>
+                    <div class="flex flex-wrap items-center gap-1.5 content-center">
+                        <span class="text-[10px] bg-primary/5 text-primary/80 px-2.5 py-1 rounded-md font-semibold whitespace-nowrap">#INTP</span>
+                        <span class="text-[10px] bg-primary/5 text-primary/80 px-2.5 py-1 rounded-md font-semibold whitespace-nowrap">#경청과_리액션</span>
+                        <span class="text-[10px] bg-primary/5 text-primary/80 px-2.5 py-1 rounded-md font-semibold whitespace-nowrap">#음악</span>
+                        <span class="text-[10px] bg-primary/5 text-primary/80 px-2.5 py-1 rounded-md font-semibold whitespace-nowrap">#게임</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <button onclick="knockDoor()" class="px-5 py-3 bg-primary text-offwhite font-semibold rounded-xl hover:bg-secondary transition-all duration-200 flex items-center space-x-2 text-xs active:scale-95">
+                        <span>🚪 똑똑! 가볍게 노크하기</span>
+                    </button>
+                    <a href="#about" class="px-5 py-3 border border-primary/20 text-primary font-semibold rounded-xl hover:bg-primary/5 transition-all duration-200 flex items-center justify-center text-xs">
+                        나의 가치관 읽어보기
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Right: Interactive Knock Door Widget -->
+            <div class="lg:col-span-5 flex justify-center items-center relative py-6">
+                <div class="absolute w-60 h-60 bg-secondary/5 rounded-full blur-3xl -z-10"></div>
+                
+                <div id="knock-card" class="bg-white border border-warmgray shadow-lg rounded-2xl p-6 max-w-sm w-full transition-all duration-300 hover:scale-[1.01] cursor-pointer" onclick="knockDoor()">
+                    <div class="absolute -top-2.5 -right-2.5 bg-accent text-offwhite text-[9px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
+                        Tap!
+                    </div>
+                    
+                    <div class="flex items-center justify-between border-b border-warmgray/40 pb-3 mb-3">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-300"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-300"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-300"></span>
+                        </div>
+                        <span class="text-[10px] font-mono text-primary/40">welcome_mate.json</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="p-4 bg-offwhite rounded-xl border border-warmgray/40 min-h-[120px] flex flex-col justify-between">
+                            <p class="text-[10px] font-mono text-primary/40">// 가벼운 노크로 소통을 시작해 보세요.</p>
+                            <p id="knock-message" class="text-xs font-medium text-primary/80 leading-relaxed italic transition-all duration-300 my-2">
+                                "노크해 주시면 저의 작은 다짐과 메시지가 열립니다."
+                            </p>
+                            <div class="flex items-center space-x-2 pt-2 border-t border-warmgray/20">
+                                <span class="text-xs">🧑‍💻</span>
+                                <div>
+                                    <h4 class="text-[11px] font-bold text-primary">박미르</h4>
+                                    <p class="text-[9px] text-primary/50">Curiosity & Reactiveness</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Down Link -->
+        <div class="w-full flex justify-center pt-8">
+            <a href="#about" class="flex flex-col items-center space-y-1.5 text-primary/40 hover:text-primary transition-colors duration-200">
+                <span class="text-[9px] font-bold tracking-widest uppercase">더 알아보기</span>
+                <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Intro Section (Values & Core Philosophy) -->
+    <section class="py-20 bg-primary text-offwhite relative" id="about">
+        <div class="max-w-4xl mx-auto px-6 text-center space-y-8">
+            <span class="text-[10px] font-bold tracking-widest text-warmgray/60 uppercase border-b border-warmgray/20 pb-1.5 inline-block">OUR RUNNING VALUES</span>
+            
+            <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold leading-relaxed max-w-2xl mx-auto">
+                "이견을 좁혀가는 과정이 유연하고,<br>
+                모르는 것을 집요하게 파고드는 힘이 있는 동료"
+            </h2>
+            
+            <div class="space-y-5 text-xs sm:text-sm text-warmgray/80 leading-relaxed text-left max-w-2xl mx-auto font-normal">
+                <p>
+                    사이드 프로젝트나 스터디를 계획할 때, 완주에 대한 현실적인 고민을 품게 됩니다. '과연 끝까지 흐지부지되지 않고 마무리할 수 있을까?', '회의 분위기가 너무 경직되거나 어색하지는 않을까?'
+                </p>
+                <p>
+                    저는 그 우려를 덜고 즐거운 완주 프로세스를 만드는 동료가 되고 싶습니다. 단순한 업무 영역의 수행을 넘어, 서로의 발상을 존중하며 피드백을 더하고, 예상치 못한 장벽이 오면 원인을 집요하게 파헤치는 끈끈한 러닝을 약속합니다.
+                </p>
+            </div>
+
+            <!-- Profile Info Summary Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto pt-6">
+                <div class="p-4 bg-secondary/30 border border-secondary/50 rounded-xl">
+                    <div class="text-lg mb-1.5">🔬</div>
+                    <h3 class="font-bold text-offwhite text-xs mb-1">근거 있는 탐구와 분석</h3>
+                    <p class="text-[11px] text-warmgray/70 leading-relaxed">직관에만 의존해 결정하거나 엉성한 동작 방식을 그냥 넘기지 않고, 명확한 원리와 근거를 디깅(Digging)하며 분석합니다.</p>
+                </div>
+                <div class="p-4 bg-secondary/30 border border-secondary/50 rounded-xl">
+                    <div class="text-lg mb-1.5">🌱</div>
+                    <h3 class="font-bold text-offwhite text-xs mb-1">서로를 돋보이게 하는 리액션</h3>
+                    <p class="text-[11px] text-warmgray/70 leading-relaxed">타인의 작은 제안에도 담백한 대안을 더해 피드백을 전달하며, 누구나 의견을 낼 수 있는 따뜻한 윤활유가 됩니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MPA Navigation Cards Section -->
+    <section class="py-24 max-w-6xl mx-auto px-6" id="explore">
+        <div class="text-center space-y-3 mb-16">
+            <span class="text-[10px] font-bold text-secondary tracking-widest uppercase bg-secondary/5 px-3 py-1 rounded-full inline-block">EXPLORE RUNNING MATE</span>
+            <h2 class="text-2xl sm:text-3xl font-bold text-primary tracking-tight">
+                러닝메이트 박미르 더 깊게 탐색하기
+            </h2>
+            <p class="text-primary/60 max-w-lg mx-auto text-xs leading-relaxed">
+                각 주제 영역을 선택하여 저의 강점, 취향, 그리고 연결 통로를 직접 넘나들어 보세요.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Link Card 1: Synergy -->
+            <a href="synergy.html" class="group bg-white border border-warmgray p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between hover:translate-y-[-4px]">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 rounded-xl bg-secondary/5 text-secondary flex items-center justify-center text-xl group-hover:bg-secondary group-hover:text-offwhite transition-colors duration-300">
+                        🪐
+                    </div>
+                    <h3 class="text-base font-bold text-primary group-hover:text-secondary transition-colors">5대 협업 시너지</h3>
+                    <p class="text-xs text-primary/70 leading-relaxed">
+                        공전하는 다섯 가지 핵심 역량 행성(탐구력, 소통력, 친근함, 취향, 적응력)이 모여 팀에서 어떤 시너지를 유기적으로 만들어내는지 행성 오비탈 인터렉티브로 체험해 보세요.
+                    </p>
+                </div>
+                <div class="pt-6 flex items-center space-x-1.5 text-xs font-bold text-secondary">
+                    <span>시너지 궤도 확인하기</span>
+                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+            </a>
+
+            <!-- Link Card 2: Vibe & Essay -->
+            <a href="vibe.html" class="group bg-white border border-warmgray p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between hover:translate-y-[-4px]">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 rounded-xl bg-secondary/5 text-secondary flex items-center justify-center text-xl group-hover:bg-secondary group-hover:text-offwhite transition-colors duration-300">
+                        🎧
+                    </div>
+                    <h3 class="text-base font-bold text-primary group-hover:text-secondary transition-colors">취향과 에세이</h3>
+                    <p class="text-xs text-primary/70 leading-relaxed">
+                        아일릿의 '빌려온 고양이' 도입부 사운드 샘플링을 디깅한 이야기 등, 넓은 스펙트럼의 음악 사랑과 호기심 어린 취향을 담은 따뜻한 에세이와 LP 플레이어를 소개합니다.
+                    </p>
+                </div>
+                <div class="pt-6 flex items-center space-x-1.5 text-xs font-bold text-secondary">
+                    <span>에세이 & LP 감상하기</span>
+                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+            </a>
+
+            <!-- Link Card 3: Contact & Coffeechat -->
+            <a href="contact.html" class="group bg-white border border-warmgray p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between hover:translate-y-[-4px]">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 rounded-xl bg-secondary/5 text-secondary flex items-center justify-center text-xl group-hover:bg-secondary group-hover:text-offwhite transition-colors duration-300">
+                        💌
+                    </div>
+                    <h3 class="text-base font-bold text-primary group-hover:text-secondary transition-colors">연락하기</h3>
+                    <p class="text-xs text-primary/70 leading-relaxed">
+                        사이드 프로젝트 기획, 알고리즘 스터디, 혹은 가벼운 네트워킹까지. 음료와 나누고 싶은 대화 주제를 골라 나만의 가상 커피챗 초대장을 전송하고 이메일을 전해보세요.
+                    </p>
+                </div>
+                <div class="pt-6 flex items-center space-x-1.5 text-xs font-bold text-secondary">
+                    <span>커피챗 초대장 보내기</span>
+                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+            </a>
+            
+        </div>
+    </section>
+
+    <!-- Minimalist Footer -->
+    <footer class="bg-primary text-offwhite border-t border-secondary/40 py-12">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="space-y-1 text-center md:text-left">
+                <a href="#" class="text-sm font-bold tracking-tight">PARK MIR.</a>
+                <p class="text-[11px] text-warmgray/50 font-normal">호기심과 시너지를 추구하는 파트너십</p>
+            </div>
+            <p class="text-[11px] text-warmgray/45 text-center md:text-right font-normal">
+                © 2026 Running Mate / 박미르. All rights reserved. Designed with Warmth & Curiosity.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Hero Knock Interactive Logic
+        const welcomeGreetings = [
+            "🚪 노크해 주셔서 반갑습니다. 오늘 하루 유연한 소통의 온도가 가득하길 바랍니다.",
+            "✨ 찾아주셔서 감사해요. 협업에 기분 좋은 윤활유와 탐구력을 불어넣을 준비가 되어 있습니다.",
+            "🎯 문제의 핵심 원리를 명확하게 탐구하고, 담백한 대안을 더하는 러닝 프로세스를 선호합니다.",
+            "🍵 편안한 대화와 잔잔한 아이디어 조율은 언제든 열려 있습니다. 언제든 소통을 건네주세요."
+        ];
+        let greetingIndex = 0;
+
+        function knockDoor() {
+            const messageEl = document.getElementById('knock-message');
+            const cardEl = document.getElementById('knock-card');
+            
+            greetingIndex = (greetingIndex + 1) % welcomeGreetings.length;
+            messageEl.innerHTML = welcomeGreetings[greetingIndex];
+            
+            // Card micro interaction feedback
+            cardEl.classList.remove('scale-[1.01]');
+            cardEl.classList.add('scale-95');
+            setTimeout(() => {
+                cardEl.classList.remove('scale-95');
+                cardEl.classList.add('scale-[1.01]');
+            }, 100);
+        }
+    </script>
+
+</body>
+</html>
