@@ -68,7 +68,7 @@
             </a>
 
             <!-- 데스크톱 메뉴 링크 (화면 크기 md 이상에서 표시됨) -->
-            <!-- * 여러 페이지 파일로 연동 시 각각 index.html, about.html, synergy.html 등으로 경로를 직접 편집하여 사용 가능합니다. -->
+            <!-- * '연락하기' 탭에 active 라인과 텍스트 컬러를 고정하였습니다. -->
             <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-primary/70">
                 <a href="index.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
                     소개
@@ -82,9 +82,9 @@
                     취향과 에세이
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
                 </a>
-                <a href="contact.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                <a href="contact.html" class="text-primary transition-colors duration-200 relative py-1 group">
                     연락하기
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                    <span class="absolute bottom-0 left-0.5 w-full h-0.5 bg-primary"></span>
                 </a>
             </nav>
 
@@ -207,7 +207,6 @@
          [복사 끝 영역] 공통 네비게이션 바 컴포넌트 
          ========================================== -->
 
-    <!-- STREAMING_CHUNK: Hiding temporary components... -->
     <style>
         /* 네비게이션 컴포넌트 데모 배경 강제 숨김 */
         .pointer-events-none.absolute.inset-0.z-0 {
@@ -215,7 +214,6 @@
         }
     </style>
 
-    <!-- STREAMING_CHUNK: Initializing Main Section Layout... -->
     <main class="pt-28 pb-20 px-6 max-w-6xl mx-auto">
         
         <!-- Page Header -->
@@ -232,7 +230,6 @@
             </p>
         </header>
 
-        <!-- STREAMING_CHUNK: Designing Grid System... -->
         <!-- Interactive Planner Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch mb-16">
             
@@ -270,7 +267,6 @@
                         </div>
                     </div>
 
-                    <!-- STREAMING_CHUNK: Designing Beverage Selector... -->
                     <!-- Beverage Selector -->
                     <div class="space-y-2.5">
                         <label class="block text-xs font-bold text-primary/80">함께할 선호 음료</label>
@@ -324,7 +320,6 @@
                 </div>
             </section>
 
-            <!-- STREAMING_CHUNK: Designing Real-time Ticket Widget... -->
             <!-- Right Grid Panel: Invitation Virtual Ticket Preview -->
             <aside class="lg:col-span-5 flex flex-col justify-center">
                 <div class="relative w-full max-w-sm mx-auto transition-transform duration-500" id="ticket-container">
@@ -397,7 +392,6 @@
                     </div>
                 </div>
 
-                <!-- STREAMING_CHUNK: Success State Block... -->
                 <!-- Dynamic Inline Success State Layer (NO alert) -->
                 <div id="success-message" class="hidden max-w-sm mx-auto w-full bg-white border border-green-200 p-6 rounded-3xl text-center space-y-4 shadow-md mt-4 transition-all duration-300">
                     <div class="w-12 h-12 rounded-full bg-green-50 text-green-500 flex items-center justify-center text-xl mx-auto">
@@ -436,7 +430,6 @@
 
     </main>
 
-    <!-- STREAMING_CHUNK: Designing Footer... -->
     <!-- Minimalist Footer -->
     <footer class="bg-primary text-offwhite border-t border-secondary/40 py-12">
         <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -450,7 +443,6 @@
         </div>
     </footer>
 
-    <!-- STREAMING_CHUNK: Instantiating JS Controller Logic... -->
     <script>
         // State variables
         let selectedTopic = "알고리즘 스터디";
@@ -618,4 +610,3 @@
 
 </body>
 </html>
-```eof
