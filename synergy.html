@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5대 협업 시너지 | 러닝메이트 박미르</title>
+    <!-- Pretendard 고해상도 한글 본문 폰트 적용 -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0B2545',    // 딥 블루 (신뢰감, 차분함)
+                        secondary: '#134074',  // 미디엄 블루
+                        offwhite: '#FAF9F5',   // 오프 화이트
+                        warmgray: '#EAE7E1',   // 따뜻한 그레이
+                        accent: '#E07A5F',     // 담백한 오렌지/레드
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #FAF9F5;
+        }
+        /* 드롭다운 메뉴 부드러운 트랜지션용 커스텀 스타일 */
+        .mobile-menu-transition {
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-in-out;
+        }
+        /* 확정 네비게이션 바의 임시 배경 텍스트가 겹치지 않도록 강제 숨김 */
+        .pointer-events-none.absolute.inset-0.z-0 {
+            display: none !important;
+        }
+        /* 부드러운 트랜지션 효과 */
+        .fade-transition {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-offwhite/50 overflow-x-hidden">
+
+    <!-- ==========================================
+         [복사 시작 영역] 공통 네비게이션 바 컴포넌트 
+         ========================================== -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-offwhite/90 backdrop-blur-md border-b border-warmgray/40 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between relative">
+            
+            <!-- 로고 및 홈 링크 -->
+            <a href="index.html" class="flex items-center space-x-2 text-primary font-bold tracking-tight text-sm select-none">
+                <span class="w-2.5 h-2.5 bg-primary rounded-full inline-block"></span>
+                <span>PARK MIR.</span>
+            </a>
+
+            <!-- 데스크톱 메뉴 링크 (화면 크기 md 이상에서 표시됨) -->
+            <!-- * 여러 페이지 파일로 연동 시 각각 index.html, about.html, synergy.html 등으로 경로를 직접 편집하여 사용 가능합니다. -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-primary/70">
+                <a href="index.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    소개
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="synergy.html" class="text-primary transition-colors duration-200 relative py-1 group">
+                    5대 협업 시너지
+                    <span class="absolute bottom-0 left-0.5 w-full h-0.5 bg-primary"></span>
+                </a>
+                <a href="vibe.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    취향과 에세이
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="contact.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                    연락하기
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                </a>
+            </nav>
+
+            <!-- 우측 행동 유도 버튼 (커피챗 제안) -->
+            <div class="hidden md:block">
+                <a href="contact.html" class="px-4 py-2 bg-primary text-offwhite rounded-lg text-xs font-semibold hover:bg-secondary transition-all duration-200 shadow-sm active:scale-95">
+                    커피챗 제안하기
+                </a>
+            </div>
+
+            <!-- 모바일용 햄버거 메뉴 버튼 (화면 크기 md 미만에서 표시됨) -->
+            <div class="flex items-center md:hidden">
+                <button id="mobile-menu-btn" type="button" class="text-primary hover:text-secondary focus:outline-none p-2 rounded-lg hover:bg-primary/5 transition-colors" aria-label="메뉴 열기" aria-expanded="false">
+                    <svg class="w-6 h-6 transition-transform duration-300" id="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 햄버거 상단 라인 -->
+                        <path id="line1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" class="origin-center transition-transform duration-200"></path>
+                        <!-- 햄버거 중단 라인 -->
+                        <path id="line2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" class="transition-opacity duration-200"></path>
+                        <!-- 햄버거 하단 라인 -->
+                        <path id="line3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16" class="origin-center transition-transform duration-200"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 모바일 드롭다운 메뉴 (기본 닫힘 상태) -->
+        <div id="mobile-menu" class="md:hidden max-h-0 opacity-0 overflow-hidden bg-offwhite border-b border-warmgray/40 mobile-menu-transition">
+            <div class="px-6 py-4 space-y-3.5 flex flex-col text-xs font-semibold text-primary/80">
+                <a href="index.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>소개</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="synergy.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>5대 협업 시너지</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="vibe.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>취향과 에세이</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="contact.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                    <span>연락하기</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <div class="pt-2">
+                    <a href="contact.html" class="w-full py-3 bg-primary text-offwhite rounded-xl text-center font-bold shadow-sm hover:bg-secondary transition-colors block">
+                        💌 커피챗 제안하기
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            // 햄버거 메뉴 각 라인 엘리먼트 (아이콘 X 변환용)
+            const line1 = document.getElementById('line1');
+            const line2 = document.getElementById('line2');
+            const line3 = document.getElementById('line3');
+
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                
+                // 버튼 웹 접근성 사양 적용
+                menuBtn.setAttribute('aria-expanded', isMenuOpen);
+
+                if (isMenuOpen) {
+                    // 메뉴 열기
+                    mobileMenu.classList.remove('max-h-0', 'opacity-0');
+                    mobileMenu.classList.add('max-h-[380px]', 'opacity-100');
+                    
+                    // 햄버거 아이콘 -> X자로 변경 애니메이션
+                    line1.setAttribute('transform', 'rotate(45 12 12) translate(0 0)');
+                    line1.setAttribute('d', 'M6 6l12 12');
+                    line2.style.opacity = '0';
+                    line3.setAttribute('transform', 'rotate(-45 12 12) translate(0 0)');
+                    line3.setAttribute('d', 'M6 18L18 6');
+                } else {
+                    // 메뉴 닫기
+                    mobileMenu.classList.remove('max-h-[380px]', 'opacity-100');
+                    mobileMenu.classList.add('max-h-0', 'opacity-0');
+                    
+                    // X자 -> 원래 햄버거 아이콘으로 환원
+                    line1.removeAttribute('transform');
+                    line1.setAttribute('d', 'M4 6h16');
+                    line2.style.opacity = '1';
+                    line3.removeAttribute('transform');
+                    line3.setAttribute('d', 'M4 18h16');
+                }
+            }
+
+            // 터치 및 클릭 이벤트 리스너 등록
+            menuBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 메뉴 외부를 터치/클릭할 경우 활성화된 모바일 메뉴를 부드럽게 닫는 보강 로직
+            document.addEventListener('click', function (event) {
+                if (isMenuOpen && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+                    toggleMenu();
+                }
+            });
+
+            // 모바일 메뉴 링크 터치/클릭 시에도 닫히도록 지원
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (isMenuOpen) toggleMenu();
+                });
+            });
+        });
+    </script>
+    <!-- ==========================================
+         [복사 끝 영역] 공통 네비게이션 바 컴포넌트 
+         ========================================== -->
+
+    <!-- Intro & Concept Title -->
+    <main class="pt-28 pb-16 px-6 max-w-6xl mx-auto">
+        <header class="text-center space-y-4 mb-16">
+            <span class="inline-flex items-center space-x-2 bg-primary/5 border border-primary/10 px-3 py-1 rounded-full text-[10px] font-bold text-primary tracking-widest uppercase">
+                ⚙️ COLLABORATION SYNERGY
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
+                박미르가 팀에 불어넣는 5대 공전 시너지
+            </h1>
+            <p class="text-xs sm:text-sm text-primary/70 max-w-2xl mx-auto leading-relaxed">
+                공동 목표를 향해 나아갈 때, 저는 팀원 주위를 든든히 조율하며 공전하는 유기적인 에너지가 됩니다.<br class="hidden sm:inline">
+                오비탈 궤도 위의 핵심 키워드 행성을 탭하여, 함께 만들 시너지의 세부 명세를 확인해 보세요.
+            </p>
+        </header>
+
+        <!-- Interactive Layout Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-white border border-warmgray p-8 sm:p-12 rounded-3xl shadow-sm">
+            
+            <!-- Left Side: Interactive Orbital Constellation Area -->
+            <div class="lg:col-span-6 flex flex-col items-center justify-center relative min-h-[380px] sm:min-h-[440px]">
+                
+                <!-- Background Constellation Guide Rings -->
+                <div class="absolute w-[270px] h-[270px] rounded-full border border-dashed border-primary/10 pointer-events-none"></div>
+                <div class="absolute w-[180px] h-[180px] rounded-full border border-primary/5 pointer-events-none"></div>
+                
+                <!-- Cosmic Grid Particles (Aesthetics decoration) -->
+                <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+                    <span class="absolute top-10 left-10 text-[8px] text-primary/15 font-mono">+ 0.72x</span>
+                    <span class="absolute bottom-10 right-10 text-[8px] text-primary/15 font-mono">360° UNIT</span>
+                    <span class="absolute top-1/2 left-4 -translate-y-1/2 text-[9px] text-primary/10 font-mono">◀ 135px ▶</span>
+                </div>
+
+                <!-- Orbit Core (Center Axis) -->
+                <div class="z-20 w-20 h-20 rounded-full bg-primary flex flex-col items-center justify-center text-center shadow-lg border-4 border-offwhite select-none">
+                    <span class="text-xs text-warmgray font-bold tracking-tight">MATE</span>
+                    <span class="text-[9px] text-warmgray/60 font-mono tracking-wider">CORE</span>
+                </div>
+
+                <!-- Javascript Controlled Planet Orbit Container -->
+                <div id="orbit-container" class="absolute w-full h-full inset-0 flex items-center justify-center cursor-pointer select-none">
+                    
+                    <!-- Planet Node 1 (탐구력) -->
+                    <div class="planet-node absolute flex flex-col items-center justify-center group" data-synergy="1">
+                        <div class="planet-sphere w-12 h-12 rounded-full bg-offwhite border border-warmgray shadow-sm group-hover:border-primary/40 group-hover:shadow transition-all duration-300 flex items-center justify-center text-lg">
+                            🔭
+                        </div>
+                        <span class="text-[10px] mt-1.5 font-bold text-primary/80 group-hover:text-primary transition-colors whitespace-nowrap bg-offwhite/90 px-1.5 py-0.5 rounded border border-warmgray/30">
+                            탐구력
+                        </span>
+                    </div>
+
+                    <!-- Planet Node 2 (소통력) -->
+                    <div class="planet-node absolute flex flex-col items-center justify-center group" data-synergy="2">
+                        <div class="planet-sphere w-12 h-12 rounded-full bg-offwhite border border-warmgray shadow-sm group-hover:border-primary/40 group-hover:shadow transition-all duration-300 flex items-center justify-center text-lg">
+                            💬
+                        </div>
+                        <span class="text-[10px] mt-1.5 font-bold text-primary/80 group-hover:text-primary transition-colors whitespace-nowrap bg-offwhite/90 px-1.5 py-0.5 rounded border border-warmgray/30">
+                            소통력
+                        </span>
+                    </div>
+
+                    <!-- Planet Node 3 (친밀감) -->
+                    <div class="planet-node absolute flex flex-col items-center justify-center group" data-synergy="3">
+                        <div class="planet-sphere w-12 h-12 rounded-full bg-offwhite border border-warmgray shadow-sm group-hover:border-primary/40 group-hover:shadow transition-all duration-300 flex items-center justify-center text-lg">
+                            🤝
+                        </div>
+                        <span class="text-[10px] mt-1.5 font-bold text-primary/80 group-hover:text-primary transition-colors whitespace-nowrap bg-offwhite/90 px-1.5 py-0.5 rounded border border-warmgray/30">
+                            친밀감
+                        </span>
+                    </div>
+
+                    <!-- Planet Node 4 (취향) -->
+                    <div class="planet-node absolute flex flex-col items-center justify-center group" data-synergy="4">
+                        <div class="planet-sphere w-12 h-12 rounded-full bg-offwhite border border-warmgray shadow-sm group-hover:border-primary/40 group-hover:shadow transition-all duration-300 flex items-center justify-center text-lg">
+                            🎨
+                        </div>
+                        <span class="text-[10px] mt-1.5 font-bold text-primary/80 group-hover:text-primary transition-colors whitespace-nowrap bg-offwhite/90 px-1.5 py-0.5 rounded border border-warmgray/30">
+                            취향
+                        </span>
+                    </div>
+
+                    <!-- Planet Node 5 (적응력) -->
+                    <div class="planet-node absolute flex flex-col items-center justify-center group" data-synergy="5">
+                        <div class="planet-sphere w-12 h-12 rounded-full bg-offwhite border border-warmgray shadow-sm group-hover:border-primary/40 group-hover:shadow transition-all duration-300 flex items-center justify-center text-lg">
+                            ⚡
+                        </div>
+                        <span class="text-[10px] mt-1.5 font-bold text-primary/80 group-hover:text-primary transition-colors whitespace-nowrap bg-offwhite/90 px-1.5 py-0.5 rounded border border-warmgray/30">
+                            적응력
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Hover Notice Tip -->
+                <div class="absolute bottom-2 text-[10px] font-medium text-primary/40 tracking-tight flex items-center space-x-1">
+                    <span>🛸</span>
+                    <span>마우스를 올리면 회전이 멈추고 탐색 가능합니다.</span>
+                </div>
+            </div>
+
+            <!-- Right Side: Beautiful Synergy Dossier Details -->
+            <div class="lg:col-span-6 space-y-6">
+                
+                <div class="border-b border-warmgray/60 pb-4 flex items-center justify-between">
+                    <div>
+                        <span class="text-[9px] font-mono text-primary/40 uppercase tracking-widest">Active Synergy Profile</span>
+                        <h2 id="detail-title" class="text-xl font-extrabold text-primary transition-colors duration-300">
+                            집요한 탐구력 (호기심)
+                        </h2>
+                    </div>
+                    <div id="detail-tag" class="px-2.5 py-1 bg-accent/10 border border-accent/20 rounded-lg text-[10px] font-bold text-accent">
+                        #해결사
+                    </div>
+                </div>
+
+                <!-- Core Description -->
+                <div class="space-y-3 min-h-[110px]">
+                    <p class="text-[10px] font-mono text-primary/40">// 시너지 역할 정의</p>
+                    <p id="detail-desc" class="text-xs sm:text-sm text-primary/80 leading-relaxed transition-all duration-300">
+                        궁금한 점이 생기면 가볍게 타협하고 넘기지 않고, 끝까지 파고들어 명확한 해결책을 찾아냅니다. 프로젝트 도중 예기치 못하게 발생하는 기습적인 버그나 기술적 한계, 기획서 이면의 보이지 않는 구멍을 끈끈하게 메우며 완성도를 끌어올립니다.
+                    </p>
+                </div>
+
+                <!-- Practical Application Card -->
+                <div class="bg-primary/[0.02] border border-warmgray p-4 rounded-2xl space-y-2">
+                    <h3 class="text-xs font-bold text-primary flex items-center space-x-1.5">
+                        <span class="w-1.5 h-1.5 bg-accent rounded-full"></span>
+                        <span>팀 협업에서의 실천 방향</span>
+                    </h3>
+                    <p id="detail-action" class="text-xs text-primary/70 leading-relaxed transition-all duration-300">
+                        기획 회의 중 정의되지 않은 구체적인 케이스나 엣지 포인트들을 선제적으로 분석하고, 기술적 위험 요소를 미리 발견해 해결 방안을 명료하게 공유합니다.
+                    </p>
+                </div>
+
+                <!-- Reaction & Value Promise -->
+                <div class="p-4 bg-primary text-offwhite rounded-2xl shadow-sm">
+                    <p class="text-[9px] font-mono text-warmgray/45">// 박미르의 시너지 약속</p>
+                    <p id="detail-promise" class="text-xs font-medium italic leading-relaxed mt-1.5 text-warmgray/90 transition-all duration-300">
+                        "모호하고 불안해 보이는 영역을 확실한 디깅을 통해 단단하고 신뢰할 수 있는 구체적인 결과물로 돌려 드립니다."
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Sub Interactive Section: Reaction Booster (No alerts/popups) -->
+        <section class="mt-20 max-w-4xl mx-auto border border-warmgray rounded-3xl p-6 sm:p-10 bg-white shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/[0.02] rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div class="space-y-3 max-w-md">
+                    <span class="text-[10px] bg-secondary/5 text-secondary px-2.5 py-0.5 rounded-full font-bold tracking-wider uppercase">
+                        Reaction Generator
+                    </span>
+                    <h3 class="text-lg font-bold text-primary">
+                        동료의 아이디어를 피워내는 담백한 리액션
+                    </h3>
+                    <p class="text-xs text-primary/70 leading-relaxed">
+                        박미르가 팀 협업 회의에서 건네는 차분하고 정돈된 피드백을 간접 체험해 보세요.<br>
+                        과장되지 않고 경청을 전제로 한 대안 제시형 리액션을 출력합니다.
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center justify-center shrink-0">
+                    <div id="reaction-display-box" class="w-64 min-h-[96px] bg-offwhite border border-warmgray rounded-2xl p-4 flex flex-col justify-between mb-3 shadow-inner">
+                        <span class="text-[8px] font-mono text-primary/30">// 긍정 시너지 응답기</span>
+                        <p id="reaction-text" class="text-xs text-primary/80 font-medium italic leading-relaxed my-2">
+                            "그 제안 흥미롭네요! 말씀해주신 관점을 살려 이런 디테일을 덧붙이면 개발 구조가 훨씬 안정적으로 설계될 수 있겠어요."
+                        </p>
+                        <div class="flex items-center space-x-1.5 self-end">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                            <span class="text-[8px] font-mono text-primary/40">Mir's Feed</span>
+                        </div>
+                    </div>
+
+                    <!-- Compact Button (No alerts) -->
+                    <button onclick="generateReaction()" class="px-5 py-2.5 bg-primary text-offwhite text-xs font-bold rounded-xl hover:bg-secondary transition-colors duration-200 shadow-sm active:scale-95">
+                        💡 피드백 리액션 생성하기
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Pathway to Vibe & Essay -->
+        <div class="mt-20 text-center space-y-4">
+            <h4 class="text-xs font-bold text-primary/50 tracking-widest uppercase">NEXT STAGE</h4>
+            <a href="vibe.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-white border border-warmgray text-xs font-bold text-primary rounded-xl hover:bg-primary/5 hover:translate-y-[-2px] transition-all duration-300 shadow-sm">
+                <span>🎧 박미르의 깊고 넓은 취향과 에세이 읽어보기</span>
+                <span>→</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- Minimalist Footer -->
+    <footer class="bg-primary text-offwhite border-t border-secondary/40 py-12">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="space-y-1 text-center md:text-left">
+                <a href="index.html" class="text-sm font-bold tracking-tight">PARK MIR.</a>
+                <p class="text-[11px] text-warmgray/50 font-normal">호기심과 시너지를 추구하는 파트너십</p>
+            </div>
+            <p class="text-[11px] text-warmgray/45 text-center md:text-right font-normal">
+                © 2026 Running Mate / 박미르. All rights reserved. Designed with Warmth & Curiosity.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Orbit & Tab Interaction Script -->
+    <script>
+        // 5대 시너지 상세 데이터 맵핑
+        const synergyData = {
+            "1": {
+                title: "집요한 탐구력 (호기심)",
+                tag: "#해결사",
+                desc: "궁금한 점이 생기면 가볍게 타협하고 넘기지 않고, 끝까지 파고들어 명확한 해결책을 찾아냅니다. 프로젝트 도중 예기치 못하게 발생하는 기습적인 버그나 기술적 한계, 기획서 이면의 보이지 않는 구멍을 끈끈하게 메우며 완성도를 끌어올립니다.",
+                action: "기획 회의 중 정의되지 않은 구체적인 케이스나 엣지 포인트들을 선제적으로 분석하고, 기술적 위험 요소를 미리 발견해 해결 방안을 명료하게 공유합니다.",
+                promise: '"모호하고 불안해 보이는 영역을 확실한 디깅을 통해 단단하고 신뢰할 수 있는 구체적인 결과물로 돌려 드립니다."'
+            },
+            "2": {
+                title: "시너지를 만드는 소통력 (리액션)",
+                tag: "#리액션",
+                desc: "단순한 기계적 대답을 뛰어넘어, 상대방의 소중한 발상과 아이디어가 무럭무럭 자랄 수 있도록 긍정적이고 담백한 대안을 덧붙입니다. 누구나 부담 없이 아이디어를 피워낼 수 있는 유연하고 차분한 소통 분위기를 팀 내에 주조합니다.",
+                action: "회의 도중 다른 팀원이 의견을 제시하면 무작정 판단하는 것을 지양하고, 그 의도를 깊이 이해하려 경청한 뒤 구체적인 덧셈식 대안을 제시하여 발전을 이끕니다.",
+                promise: '"회의의 문턱을 한껏 낮추고, 편안한 대화 흐름 속에서 다채롭고 단단한 시너지를 이끌어냅니다."'
+            },
+            "3": {
+                title: "벽을 허무는 친근함 (친밀감)",
+                tag: "#소통_윤활유",
+                desc: "처음 맞닥뜨리는 어색한 분위기나 낯선 환경에서도 차분하고 기분 좋은 대화를 통해 긴장을 부드럽게 완화합니다. 팀워크가 단절되지 않도록 서로의 생각을 투명하게 연결해주는 소중한 팀 내 접착제 역할을 수행합니다.",
+                action: "신규 구성원 합류 시 적극적이고 정돈된 온딩을 돕거나, 논쟁 상황에서 중립을 지키며 부드러운 중재 대안을 제공해 갈등 없는 안전한 팀 생태계를 조성합니다.",
+                promise: '"어려운 일도 서로 웃으며 즐겁게 헤쳐나갈 수 있는 유쾌하고 조화로운 팀 분위기를 선사합니다."'
+            },
+            "4": {
+                title: "폭넓은 취향과 크리에이티브 (취향)",
+                tag: "#영감_제공자",
+                desc: "게임 음악 감상을 시작으로 시대를 풍미한 장르나 숨은 디테일을 탐색하는 넓고 깊은 디깅 취향을 보유하고 있습니다. 이러한 크리에이티브한 영감은 단순한 코드 작성을 넘어 사용자 중심의 꼼꼼한 UI와 섬세한 유저 여정을 설계할 때 탁월한 빛을 냅니다.",
+                action: "사용자의 세세한 인터랙션 흐름에 감성적인 디테일을 한 스푼 더하고, 타 분야의 트렌디하고 세련된 발상 방식을 팀 브레인스토밍에 자연스럽게 녹여냅니다.",
+                promise: '"남다른 관점과 호기심 어린 취향으로 프로젝트에 신선하고 감성적인 매력을 불어넣겠습니다."'
+            },
+            "5": {
+                title: "스펀지 같은 빠른 적응력 (적응력)",
+                tag: "#스펀지",
+                desc: "새롭고 낯선 개발 프레임워크나 최신 생산성 도구, 바삐 움직이는 스프린트 규칙 앞에서도 흔들리지 않고 원리를 기민하게 학습해 나갑니다. 상황 변화에 빠르게 몸을 맞춰 스스로 제 몫을 온전히 해내며 팀에 든든한 상수를 더해 줍니다.",
+                action: "새로 도입된 기술 스택이나 복잡해진 아키텍처 규칙을 빠르게 전수받아 조기 적응하고, 개발 동향을 빠르게 선점해 팀 동료들이 허덕이지 않도록 유연하게 전파합니다.",
+                promise: '"팀이 처한 어떠한 변화무쌍한 환경 속에서도 흐름을 타며 중심을 단단히 잡는 상수가 되겠습니다."'
+            }
+        };
+
+        // 72도 간격 수학적 오비탈 계산
+        let angle = 0;
+        const radius = 135; // 중심에서 행성까지의 공전 반경 (겹침 방지 여유 공간)
+        const planets = document.querySelectorAll('.planet-node');
+        let isPaused = false;
+
+        function updatePlanetsPosition() {
+            if (!isPaused) {
+                angle += 0.003; // 공전 속도 조절
+            }
+            
+            planets.forEach((planet, index) => {
+                // 5개 행성이 360도를 정확히 5등분 (2 * Math.PI / 5 => 72도)
+                const theta = angle + (index * 2 * Math.PI / 5);
+                const x = Math.cos(theta) * radius;
+                const y = Math.sin(theta) * radius;
+                
+                // x, y 좌표 변환을 통한 공전 구현. 회전 없이 평행 이동하므로 글씨가 항상 똑바로 보임
+                planet.style.transform = `translate(${x}px, ${y}px)`;
+            });
+            requestAnimationFrame(updatePlanetsPosition);
+        }
+
+        // 인터랙션 제어
+        const orbitContainer = document.getElementById('orbit-container');
+        
+        // 마우스 호버 시 공전 멈춤
+        orbitContainer.addEventListener('mouseenter', () => { isPaused = true; });
+        orbitContainer.addEventListener('mouseleave', () => { isPaused = false; });
+
+        // 행성 클릭 시 디테일 뷰어 업데이트
+        planets.forEach(planet => {
+            planet.addEventListener('click', (e) => {
+                e.stopPropagation(); // 궤도 이벤트 전파 방지
+                
+                const synergyId = planet.getAttribute('data-synergy');
+                const data = synergyData[synergyId];
+                
+                if (data) {
+                    // 기존 활성화 클래스 해제 및 신규 부여
+                    planets.forEach(p => {
+                        p.querySelector('.planet-sphere').classList.remove('border-primary', 'bg-primary/5', 'scale-110');
+                    });
+                    planet.querySelector('.planet-sphere').classList.add('border-primary', 'bg-primary/5', 'scale-110');
+                    
+                    // 디테일 판넬 업데이트 (담백한 페이드 트랜지션 효과 모사)
+                    const titleEl = document.getElementById('detail-title');
+                    const tagEl = document.getElementById('detail-tag');
+                    const descEl = document.getElementById('detail-desc');
+                    const actionEl = document.getElementById('detail-action');
+                    const promiseEl = document.getElementById('detail-promise');
+                    
+                    // 신규 텍스트 연동
+                    titleEl.innerText = data.title;
+                    tagEl.innerText = data.tag;
+                    descEl.innerText = data.desc;
+                    actionEl.innerText = data.action;
+                    promiseEl.innerText = data.promise;
+                }
+            });
+        });
+
+        // 초기 시작 시 첫 번째 행성(탐구력) 임의 강제 활성화 비주얼 적용
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstPlanet = document.querySelector('.planet-node[data-synergy="1"]');
+            if (firstPlanet) {
+                firstPlanet.querySelector('.planet-sphere').classList.add('border-primary', 'bg-primary/5', 'scale-110');
+            }
+            updatePlanetsPosition();
+        });
+
+        // 리액션 생성기 멘트 리스트 (과장 배제, 담백함 및 대안 위주)
+        const reactions = [
+            "그 제안 흥미롭네요! 말씀해주신 방향성에 덧붙여 이런 디테일을 얹어 보면 개발 공수도 줄이고 사용자 플로우도 깔끔해질 것 같습니다.",
+            "아, 그렇게 바라볼 수도 있군요. 저도 그 부분에서 살짝 염려되는 마이너 케이스가 있었는데, 그 대안을 기반으로 하면 가뿐히 해결되겠어요.",
+            "팀원분의 아이디어가 기획서의 흐린 부분을 명쾌하게 짚어 주시네요. 제가 프론트엔드 단에서 자연스럽게 인터랙션으로 연출해 오겠습니다.",
+            "좋은 의견 덕분에 까다로운 분기 처리가 직관적으로 정리되었습니다. 구현 상에 무리가 없도록 엣지 코너 케이스를 미리 정리해 둘게요.",
+            "의견 주신 구조를 채택하면 앞으로의 유지보수 비용이 상당히 절감될 것으로 보입니다. 좋은 고민 제안해주셔서 감사합니다!"
+        ];
+        let prevReactionIndex = 0;
+
+        function generateReaction() {
+            const reactionTextEl = document.getElementById('reaction-text');
+            const displayBoxEl = document.getElementById('reaction-display-box');
+            
+            // 중복 방지 랜덤 인덱스 추출
+            let nextIndex = prevReactionIndex;
+            while (nextIndex === prevReactionIndex) {
+                nextIndex = Math.floor(Math.random() * reactions.length);
+            }
+            prevReactionIndex = nextIndex;
+            
+            // 마이크로 피드백 효과 적용
+            displayBoxEl.classList.add('scale-95', 'opacity-80');
+            setTimeout(() => {
+                reactionTextEl.innerText = `"${reactions[nextIndex]}"`;
+                displayBoxEl.classList.remove('scale-95', 'opacity-80');
+            }, 100);
+        }
+    </script>
+
+</body>
+</html>
