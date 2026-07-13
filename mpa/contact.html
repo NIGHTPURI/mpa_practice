@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="transition-colors duration-300">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,10 @@
     <!-- Pretendard 고해상도 한글 본문 폰트 적용 -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
         tailwind.config = {
+            darkMode: 'class', // 클래스 기반 다크모드 적용 활성화
             theme: {
                 extend: {
                     colors: {
@@ -17,6 +19,9 @@
                         offwhite: '#FAF9F5',   // 오프 화이트
                         warmgray: '#EAE7E1',   // 따뜻한 그레이
                         accent: '#E07A5F',     // 담백한 오렌지/레드
+                        darkbg: '#030811',     // 다크모드 메인 배경
+                        darkpanel: '#081325',  // 다크모드 카드 패널 배경
+                        darkinput: '#0c1b33',  // 다크모드 입력 폼 배경
                     },
                     fontFamily: {
                         sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
@@ -28,7 +33,6 @@
     <style>
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: #FAF9F5;
         }
         /* 드롭다운 메뉴 부드러운 트랜지션용 커스텀 스타일 */
         .mobile-menu-transition {
@@ -53,57 +57,63 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-offwhite/50 overflow-x-hidden">
+<body class="min-h-screen bg-offwhite/50 dark:bg-darkbg text-primary dark:text-offwhite overflow-x-hidden transition-colors duration-300">
 
     <!-- ==========================================
          [복사 시작 영역] 공통 네비게이션 바 컴포넌트 
          ========================================== -->
-    <header class="fixed top-0 left-0 w-full z-50 bg-offwhite/90 backdrop-blur-md border-b border-warmgray/40 transition-all duration-300">
+    <header class="fixed top-0 left-0 w-full z-50 bg-offwhite/90 dark:bg-darkbg/90 backdrop-blur-md border-b border-warmgray/40 dark:border-secondary/30 transition-all duration-300">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between relative">
             
             <!-- 로고 및 홈 링크 -->
-            <a href="index.html" class="flex items-center space-x-2 text-primary font-bold tracking-tight text-sm select-none">
-                <span class="w-2.5 h-2.5 bg-primary rounded-full inline-block"></span>
+            <a href="index.html" class="flex items-center space-x-2 text-primary dark:text-offwhite font-bold tracking-tight text-sm select-none">
+                <span class="w-2.5 h-2.5 bg-primary dark:bg-accent rounded-full inline-block"></span>
                 <span>PARK MIR.</span>
             </a>
 
             <!-- 데스크톱 메뉴 링크 (화면 크기 md 이상에서 표시됨) -->
-            <!-- * '연락하기' 탭에 active 라인과 텍스트 컬러를 고정하였습니다. -->
-            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-primary/70">
-                <a href="index.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-primary/70 dark:text-warmgray/70">
+                <a href="index.html" class="hover:text-primary dark:hover:text-offwhite transition-colors duration-200 relative py-1 group">
                     소개
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary dark:bg-accent transition-all duration-200 group-hover:w-full"></span>
                 </a>
-                <a href="synergy.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                <a href="synergy.html" class="hover:text-primary dark:hover:text-offwhite transition-colors duration-200 relative py-1 group">
                     5대 협업 시너지
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary dark:bg-accent transition-all duration-200 group-hover:w-full"></span>
                 </a>
-                <a href="vibe.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
+                <a href="vibe.html" class="hover:text-primary dark:hover:text-offwhite transition-colors duration-200 relative py-1 group">
                     취향과 에세이
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary dark:bg-accent transition-all duration-200 group-hover:w-full"></span>
                 </a>
-                <a href="contact.html" class="text-primary transition-colors duration-200 relative py-1 group">
+                <a href="contact.html" class="text-primary dark:text-offwhite transition-colors duration-200 relative py-1 group">
                     연락하기
-                    <span class="absolute bottom-0 left-0.5 w-full h-0.5 bg-primary"></span>
+                    <span class="absolute bottom-0 left-0.5 w-full h-0.5 bg-primary dark:bg-accent"></span>
                 </a>
             </nav>
 
-            <!-- 우측 행동 유도 버튼 (커피챗 제안) -->
-            <div class="hidden md:block">
-                <a href="contact.html" class="px-4 py-2 bg-primary text-offwhite rounded-lg text-xs font-semibold hover:bg-secondary transition-all duration-200 shadow-sm active:scale-95">
+            <!-- 우측 행동 유도 및 테마 토글 버튼 -->
+            <div class="hidden md:flex items-center space-x-4">
+                <!-- 테마 토글 버튼 (데스크톱) -->
+                <button onclick="toggleTheme()" class="p-2 rounded-xl bg-warmgray/30 dark:bg-secondary/40 hover:bg-warmgray/50 dark:hover:bg-secondary/60 transition-all text-sm active:scale-95 focus:outline-none" aria-label="테마 전환">
+                    <span class="dark:hidden">🌙</span>
+                    <span class="hidden dark:inline">☀️</span>
+                </button>
+                <a href="contact.html" class="px-4 py-2 bg-primary dark:bg-accent text-offwhite rounded-lg text-xs font-semibold hover:bg-secondary dark:hover:bg-accent/80 transition-all duration-200 shadow-sm active:scale-95">
                     커피챗 제안하기
                 </a>
             </div>
 
-            <!-- 모바일용 햄버거 메뉴 버튼 (화면 크기 md 미만에서 표시됨) -->
-            <div class="flex items-center md:hidden">
-                <button id="mobile-menu-btn" type="button" class="text-primary hover:text-secondary focus:outline-none p-2 rounded-lg hover:bg-primary/5 transition-colors" aria-label="메뉴 열기" aria-expanded="false">
+            <!-- 모바일용 메뉴 헤더 섹션 (햄버거 & 모바일 다크토글) -->
+            <div class="flex items-center space-x-2 md:hidden">
+                <!-- 테마 토글 버튼 (모바일) -->
+                <button onclick="toggleTheme()" class="p-2 rounded-xl bg-warmgray/30 dark:bg-secondary/40 hover:bg-warmgray/50 dark:hover:bg-secondary/60 transition-all text-xs active:scale-95 focus:outline-none" aria-label="테마 전환">
+                    <span class="dark:hidden">🌙</span>
+                    <span class="hidden dark:inline">☀️</span>
+                </button>
+                <button id="mobile-menu-btn" type="button" class="text-primary dark:text-offwhite hover:text-secondary focus:outline-none p-2 rounded-lg hover:bg-primary/5 transition-colors" aria-label="메뉴 열기" aria-expanded="false">
                     <svg class="w-6 h-6 transition-transform duration-300" id="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <!-- 햄버거 상단 라인 -->
                         <path id="line1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" class="origin-center transition-transform duration-200"></path>
-                        <!-- 햄버거 중단 라인 -->
                         <path id="line2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" class="transition-opacity duration-200"></path>
-                        <!-- 햄버거 하단 라인 -->
                         <path id="line3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16" class="origin-center transition-transform duration-200"></path>
                     </svg>
                 </button>
@@ -111,26 +121,26 @@
         </div>
 
         <!-- 모바일 드롭다운 메뉴 (기본 닫힘 상태) -->
-        <div id="mobile-menu" class="md:hidden max-h-0 opacity-0 overflow-hidden bg-offwhite border-b border-warmgray/40 mobile-menu-transition">
-            <div class="px-6 py-4 space-y-3.5 flex flex-col text-xs font-semibold text-primary/80">
-                <a href="index.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+        <div id="mobile-menu" class="md:hidden max-h-0 opacity-0 overflow-hidden bg-offwhite dark:bg-darkpanel border-b border-warmgray/40 dark:border-secondary/30 mobile-menu-transition">
+            <div class="px-6 py-4 space-y-3.5 flex flex-col text-xs font-semibold text-primary/80 dark:text-warmgray/90">
+                <a href="index.html" class="py-2.5 border-b border-warmgray/20 dark:border-secondary/20 hover:text-primary dark:hover:text-offwhite transition-colors flex items-center justify-between">
                     <span>소개</span>
                     <span class="text-primary/30">→</span>
                 </a>
-                <a href="synergy.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                <a href="synergy.html" class="py-2.5 border-b border-warmgray/20 dark:border-secondary/20 hover:text-primary dark:hover:text-offwhite transition-colors flex items-center justify-between">
                     <span>5대 협업 시너지</span>
                     <span class="text-primary/30">→</span>
                 </a>
-                <a href="vibe.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                <a href="vibe.html" class="py-2.5 border-b border-warmgray/20 dark:border-secondary/20 hover:text-primary dark:hover:text-offwhite transition-colors flex items-center justify-between">
                     <span>취향과 에세이</span>
                     <span class="text-primary/30">→</span>
                 </a>
-                <a href="contact.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
+                <a href="contact.html" class="py-2.5 border-b border-warmgray/20 dark:border-secondary/20 hover:text-primary dark:hover:text-offwhite transition-colors flex items-center justify-between">
                     <span>연락하기</span>
                     <span class="text-primary/30">→</span>
                 </a>
                 <div class="pt-2">
-                    <a href="contact.html" class="w-full py-3 bg-primary text-offwhite rounded-xl text-center font-bold shadow-sm hover:bg-secondary transition-colors block">
+                    <a href="contact.html" class="w-full py-3 bg-primary dark:bg-accent text-offwhite rounded-xl text-center font-bold shadow-sm hover:bg-secondary dark:hover:bg-accent/80 transition-colors block">
                         💌 커피챗 제안하기
                     </a>
                 </div>
@@ -138,12 +148,25 @@
         </div>
     </header>
 
+    <!-- Easter Egg Modal Overlay (No Alert Rule Met) -->
+    <div id="easter-egg-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 transition-all duration-300">
+        <div class="bg-white dark:bg-darkpanel border-2 border-accent p-6 sm:p-8 rounded-3xl text-center max-w-sm w-full shadow-2xl transform scale-95 transition-transform duration-300 relative">
+            <div class="text-5xl mb-4 animate-bounce">🎁</div>
+            <h3 class="text-base sm:text-lg font-extrabold text-primary dark:text-offwhite tracking-tight">이스터에그를 발견하셨습니다!</h3>
+            <p class="text-xs text-primary/70 dark:text-warmgray/70 leading-relaxed mt-2.5 mb-6">
+                아메리카노를 무려 <strong class="text-accent">10번</strong>이나 연속으로 터치하셨군요! 이 집요함이라면 저 미르가 무조건 <strong class="text-primary dark:text-accent font-bold">진짜 시원한 아메리카노 한 잔</strong> 대접하겠습니다. 커피챗 신청 후 저를 만날 때 꼭 알려주세요! 😊
+            </p>
+            <button onclick="closeEasterEgg()" class="w-full py-3 bg-accent text-offwhite text-xs font-bold rounded-xl hover:bg-accent/80 transition-colors active:scale-95 shadow-md">
+                영광스러운 약속 수락하기 ☕
+            </button>
+        </div>
+    </div>
+
     <script>
+        // 모바일 메뉴 기능 스크립트 복원 수용
         document.addEventListener('DOMContentLoaded', function () {
             const menuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
-            
-            // 햄버거 메뉴 각 라인 엘리먼트 (아이콘 X 변환용)
             const line1 = document.getElementById('line1');
             const line2 = document.getElementById('line2');
             const line3 = document.getElementById('line3');
@@ -152,27 +175,19 @@
 
             function toggleMenu() {
                 isMenuOpen = !isMenuOpen;
-                
-                // 버튼 웹 접근성 사양 적용
                 menuBtn.setAttribute('aria-expanded', isMenuOpen);
 
                 if (isMenuOpen) {
-                    // 메뉴 열기
                     mobileMenu.classList.remove('max-h-0', 'opacity-0');
                     mobileMenu.classList.add('max-h-[380px]', 'opacity-100');
-                    
-                    // 햄버거 아이콘 -> X자로 변경 애니메이션
                     line1.setAttribute('transform', 'rotate(45 12 12) translate(0 0)');
                     line1.setAttribute('d', 'M6 6l12 12');
                     line2.style.opacity = '0';
                     line3.setAttribute('transform', 'rotate(-45 12 12) translate(0 0)');
                     line3.setAttribute('d', 'M6 18L18 6');
                 } else {
-                    // 메뉴 닫기
                     mobileMenu.classList.remove('max-h-[380px]', 'opacity-100');
                     mobileMenu.classList.add('max-h-0', 'opacity-0');
-                    
-                    // X자 -> 원래 햄버거 아이콘으로 환원
                     line1.removeAttribute('transform');
                     line1.setAttribute('d', 'M4 6h16');
                     line2.style.opacity = '1';
@@ -181,25 +196,15 @@
                 }
             }
 
-            // 터치 및 클릭 이벤트 리스너 등록
             menuBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
                 toggleMenu();
             });
 
-            // 메뉴 외부를 터치/클릭할 경우 활성화된 모바일 메뉴를 부드럽게 닫는 보강 로직
             document.addEventListener('click', function (event) {
                 if (isMenuOpen && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
                     toggleMenu();
                 }
-            });
-
-            // 모바일 메뉴 링크 터치/클릭 시에도 닫히도록 지원
-            const mobileLinks = mobileMenu.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (isMenuOpen) toggleMenu();
-                });
             });
         });
     </script>
@@ -208,7 +213,6 @@
          ========================================== -->
 
     <style>
-        /* 네비게이션 컴포넌트 데모 배경 강제 숨김 */
         .pointer-events-none.absolute.inset-0.z-0 {
             display: none !important;
         }
@@ -218,13 +222,13 @@
         
         <!-- Page Header -->
         <header class="text-center space-y-4 mb-16">
-            <span class="inline-flex items-center space-x-2 bg-primary/5 border border-primary/10 px-3.5 py-1 rounded-full text-[10px] font-bold text-primary tracking-widest uppercase">
+            <span class="inline-flex items-center space-x-2 bg-primary/5 dark:bg-secondary/20 border border-primary/10 dark:border-secondary/30 px-3.5 py-1 rounded-full text-[10px] font-bold text-primary dark:text-accent tracking-widest uppercase">
                 ✉️ Coffee Chat Planner
             </span>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
-                러닝메이트와 마시는 가상 커피 한 잔
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-primary dark:text-offwhite tracking-tight">
+                러닝메이트 박미르와 마시는 가상 커피 한 잔
             </h1>
-            <p class="text-xs sm:text-sm text-primary/70 max-w-2xl mx-auto leading-relaxed font-normal">
+            <p class="text-xs sm:text-sm text-primary/70 dark:text-warmgray/70 max-w-2xl mx-auto leading-relaxed font-normal">
                 함께 나누고 싶은 대화 주제와 취향에 맞는 따뜻한 음료를 직접 구성해 보세요.<br class="hidden sm:inline">
                 작성해 주신 제안은 가상의 초대장 규격으로 소장하거나, 저에게 이메일로 전송하실 수 있습니다.
             </p>
@@ -234,33 +238,33 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch mb-16">
             
             <!-- Left Grid Panel: Customizer Controls -->
-            <section class="lg:col-span-7 bg-white border border-warmgray/60 p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col justify-between">
+            <section class="lg:col-span-7 bg-white dark:bg-darkpanel border border-warmgray/60 dark:border-secondary/40 p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col justify-between transition-colors duration-300">
                 <div class="space-y-6">
                     <div>
-                        <h2 class="text-base font-bold text-primary tracking-tight flex items-center space-x-2">
+                        <h2 class="text-base font-bold text-primary dark:text-offwhite tracking-tight flex items-center space-x-2">
                             <span>☕</span>
                             <span>커피챗 초대장 조건 기획하기</span>
                         </h2>
-                        <p class="text-[11px] text-primary/50 mt-1">대화하고 싶은 주제를 선택하시면 티켓에 실시간 동기화됩니다.</p>
+                        <p class="text-[11px] text-primary/50 dark:text-warmgray/50 mt-1">대화하고 싶은 주제를 선택하시면 티켓에 실시간 동기화됩니다.</p>
                     </div>
 
                     <!-- Topic Selector -->
                     <div class="space-y-2.5">
-                        <label class="block text-xs font-bold text-primary/80">대화 주제 선택</label>
+                        <label class="block text-xs font-bold text-primary/80 dark:text-warmgray/80">대화 주제 선택</label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            <button type="button" onclick="setTopic(this, '알고리즘 스터디', '📝')" class="topic-btn px-4 py-3 bg-offwhite border border-warmgray text-left text-xs font-semibold text-primary rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all focus:outline-none flex items-center space-x-2.5" id="topic-default">
+                            <button type="button" onclick="setTopic(this, '알고리즘 스터디', '📝')" class="topic-btn px-4 py-3 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 text-left text-xs font-semibold text-primary dark:text-offwhite rounded-xl hover:border-primary/40 dark:hover:border-accent/40 hover:bg-primary/5 dark:hover:bg-secondary/15 transition-all focus:outline-none flex items-center space-x-2.5" id="topic-default">
                                 <span>📝</span>
                                 <span class="whitespace-nowrap">알고리즘 스터디</span>
                             </button>
-                            <button type="button" onclick="setTopic(this, '사이드 프로젝트', '💻')" class="topic-btn px-4 py-3 bg-offwhite border border-warmgray text-left text-xs font-semibold text-primary rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all focus:outline-none flex items-center space-x-2.5">
+                            <button type="button" onclick="setTopic(this, '사이드 프로젝트', '💻')" class="topic-btn px-4 py-3 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 text-left text-xs font-semibold text-primary dark:text-offwhite rounded-xl hover:border-primary/40 dark:hover:border-accent/40 hover:bg-primary/5 dark:hover:bg-secondary/15 transition-all focus:outline-none flex items-center space-x-2.5">
                                 <span>💻</span>
                                 <span class="whitespace-nowrap">사이드 프로젝트</span>
                             </button>
-                            <button type="button" onclick="setTopic(this, '가벼운 기술 수다', '💡')" class="topic-btn px-4 py-3 bg-offwhite border border-warmgray text-left text-xs font-semibold text-primary rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all focus:outline-none flex items-center space-x-2.5">
+                            <button type="button" onclick="setTopic(this, '가벼운 기술 수다', '💡')" class="topic-btn px-4 py-3 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 text-left text-xs font-semibold text-primary dark:text-offwhite rounded-xl hover:border-primary/40 dark:hover:border-accent/40 hover:bg-primary/5 dark:hover:bg-secondary/15 transition-all focus:outline-none flex items-center space-x-2.5">
                                 <span>💡</span>
                                 <span class="whitespace-nowrap">가벼운 기술 수다</span>
                             </button>
-                            <button type="button" onclick="setTopic(this, '취향 네트워킹', '🎮')" class="topic-btn px-4 py-3 bg-offwhite border border-warmgray text-left text-xs font-semibold text-primary rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all focus:outline-none flex items-center space-x-2.5">
+                            <button type="button" onclick="setTopic(this, '취향 네트워킹', '🎮')" class="topic-btn px-4 py-3 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 text-left text-xs font-semibold text-primary dark:text-offwhite rounded-xl hover:border-primary/40 dark:hover:border-accent/40 hover:bg-primary/5 dark:hover:bg-secondary/15 transition-all focus:outline-none flex items-center space-x-2.5">
                                 <span>🎮</span>
                                 <span class="whitespace-nowrap">취향 네트워킹 (음악/게임)</span>
                             </button>
@@ -269,23 +273,23 @@
 
                     <!-- Beverage Selector -->
                     <div class="space-y-2.5">
-                        <label class="block text-xs font-bold text-primary/80">함께할 선호 음료</label>
+                        <label class="block text-xs font-bold text-primary/80 dark:text-warmgray/80">함께할 선호 음료 </label>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                            <button type="button" onclick="setBeverage(this, '아메리카노', '☕')" class="beverage-btn p-3 bg-offwhite border border-warmgray text-center rounded-xl hover:border-primary/40 transition-all focus:outline-none flex flex-col items-center justify-center space-y-1" id="beverage-default">
+                            <button type="button" onclick="setBeverage(this, '아메리카노', '☕')" class="beverage-btn p-3 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 text-center rounded-xl hover:border-primary/40 dark:hover:border-accent/40 transition-all focus:outline-none flex flex-col items-center justify-center space-y-1 active:scale-95" id="beverage-default">
                                 <span class="text-lg">☕</span>
-                                <span class="text-[10px] font-bold text-primary">아메리카노</span>
+                                <span class="text-[10px] font-bold text-primary dark:text-offwhite">아메리카노</span>
                             </button>
-                            <button type="button" onclick="setBeverage(this, '바닐라 라떼', '🥤')" class="beverage-btn p-3 bg-offwhite border border-warmgray text-center rounded-xl hover:border-primary/40 transition-all focus:outline-none flex flex-col items-center justify-center space-y-1">
+                            <button type="button" onclick="setBeverage(this, '바닐라 라떼', '🥤')" class="beverage-btn p-3 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 text-center rounded-xl hover:border-primary/40 dark:hover:border-accent/40 transition-all focus:outline-none flex flex-col items-center justify-center space-y-1 active:scale-95">
                                 <span class="text-lg">🥤</span>
-                                <span class="text-[10px] font-bold text-primary">바닐라 라떼</span>
+                                <span class="text-[10px] font-bold text-primary dark:text-offwhite">바닐라 라떼</span>
                             </button>
-                            <button type="button" onclick="setBeverage(this, '말차 아포가토', '🍵')" class="beverage-btn p-3 bg-offwhite border border-warmgray text-center rounded-xl hover:border-primary/40 transition-all focus:outline-none flex flex-col items-center justify-center space-y-1">
+                            <button type="button" onclick="setBeverage(this, '말차 아포가토', '🍵')" class="beverage-btn p-3 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 text-center rounded-xl hover:border-primary/40 dark:hover:border-accent/40 transition-all focus:outline-none flex flex-col items-center justify-center space-y-1 active:scale-95">
                                 <span class="text-lg">🍵</span>
-                                <span class="text-[10px] font-bold text-primary">말차 아포가토</span>
+                                <span class="text-[10px] font-bold text-primary dark:text-offwhite">말차 아포가토</span>
                             </button>
-                            <button type="button" onclick="setBeverage(this, '캐모마일 티', '🌼')" class="beverage-btn p-3 bg-offwhite border border-warmgray text-center rounded-xl hover:border-primary/40 transition-all focus:outline-none flex flex-col items-center justify-center space-y-1">
+                            <button type="button" onclick="setBeverage(this, '캐모마일 티', '🌼')" class="beverage-btn p-3 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 text-center rounded-xl hover:border-primary/40 dark:hover:border-accent/40 transition-all focus:outline-none flex flex-col items-center justify-center space-y-1 active:scale-95">
                                 <span class="text-lg">🌼</span>
-                                <span class="text-[10px] font-bold text-primary">캐모마일 티</span>
+                                <span class="text-[10px] font-bold text-primary dark:text-offwhite">캐모마일 티</span>
                             </button>
                         </div>
                     </div>
@@ -293,28 +297,28 @@
                     <!-- Input Fields -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="space-y-1.5">
-                            <label for="sender-name" class="block text-xs font-bold text-primary/80">보내는 분 성함</label>
-                            <input type="text" id="sender-name" oninput="updateMessage()" placeholder="동료분 성함 혹은 팀명" class="w-full px-4 py-2.5 bg-offwhite border border-warmgray rounded-xl text-xs text-primary focus:outline-none focus:border-primary/50 transition-colors">
+                            <label for="sender-name" class="block text-xs font-bold text-primary/80 dark:text-warmgray/80">보내는 분 성함</label>
+                            <input type="text" id="sender-name" oninput="updateMessage()" placeholder="동료분 성함 혹은 팀명" class="w-full px-4 py-2.5 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 rounded-xl text-xs text-primary dark:text-offwhite focus:outline-none focus:border-primary/50 dark:focus:border-accent/50 transition-colors">
                         </div>
                         <div class="space-y-1.5">
-                            <label for="sender-email" class="block text-xs font-bold text-primary/80">연락처 혹은 이메일</label>
-                            <input type="email" id="sender-email" placeholder="이메일 주소 등 회신 통로" class="w-full px-4 py-2.5 bg-offwhite border border-warmgray rounded-xl text-xs text-primary focus:outline-none focus:border-primary/50 transition-colors">
+                            <label for="sender-email" class="block text-xs font-bold text-primary/80 dark:text-warmgray/80">연락처 혹은 이메일</label>
+                            <input type="email" id="sender-email" placeholder="이메일 주소 등 회신 통로" class="w-full px-4 py-2.5 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 rounded-xl text-xs text-primary dark:text-offwhite focus:outline-none focus:border-primary/50 dark:focus:border-accent/50 transition-colors">
                         </div>
                     </div>
 
                     <!-- Short Message -->
                     <div class="space-y-1.5">
-                        <label for="sender-text" class="block text-xs font-bold text-primary/80">간단한 인사말씀</label>
-                        <textarea id="sender-text" oninput="updateMessage()" rows="3" placeholder="예: 안녕하세요! 박미르님 포트폴리오를 읽고 흥미가 생겨 알고리즘 스터디 논의 제안드립니다." class="w-full px-4 py-3 bg-offwhite border border-warmgray rounded-xl text-xs text-primary focus:outline-none focus:border-primary/50 resize-none transition-colors"></textarea>
+                        <label for="sender-text" class="block text-xs font-bold text-primary/80 dark:text-warmgray/80">간단한 인사말씀</label>
+                        <textarea id="sender-text" oninput="updateMessage()" rows="3" placeholder="예: 안녕하세요! 박미르님 포트폴리오를 읽고 흥미가 생겨 알고리즘 스터디 논의 제안드립니다." class="w-full px-4 py-3 bg-offwhite dark:bg-darkinput border border-warmgray dark:border-secondary/30 rounded-xl text-xs text-primary dark:text-offwhite focus:outline-none focus:border-primary/50 dark:focus:border-accent/50 resize-none transition-colors"></textarea>
                     </div>
                 </div>
 
                 <!-- Action Button Cluster -->
-                <div class="pt-6 border-t border-warmgray/40 mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button onclick="copyInvitation(this)" type="button" class="px-5 py-3 border border-primary/20 text-primary font-semibold rounded-xl hover:bg-primary/5 transition-all text-xs active:scale-95 flex items-center justify-center space-x-2">
+                <div class="pt-6 border-t border-warmgray/40 dark:border-secondary/30 mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button onclick="copyInvitation(this)" type="button" class="px-5 py-3 border border-primary/20 dark:border-secondary/40 text-primary dark:text-offwhite font-semibold rounded-xl hover:bg-primary/5 dark:hover:bg-secondary/10 transition-all text-xs active:scale-95 flex items-center justify-center space-x-2">
                         <span>📋 초대장 복사하기</span>
                     </button>
-                    <button onclick="sendInvitation()" type="button" class="px-5 py-3 bg-primary text-offwhite font-bold rounded-xl hover:bg-secondary transition-all text-xs active:scale-95 flex items-center justify-center space-x-2 shadow-sm">
+                    <button onclick="sendInvitation()" type="button" class="px-5 py-3 bg-primary dark:bg-accent text-offwhite font-bold rounded-xl hover:bg-secondary dark:hover:bg-accent/80 transition-all text-xs active:scale-95 flex items-center justify-center space-x-2 shadow-sm">
                         <span>🚀 실제 제안 보내기</span>
                     </button>
                 </div>
@@ -393,18 +397,18 @@
                 </div>
 
                 <!-- Dynamic Inline Success State Layer (NO alert) -->
-                <div id="success-message" class="hidden max-w-sm mx-auto w-full bg-white border border-green-200 p-6 rounded-3xl text-center space-y-4 shadow-md mt-4 transition-all duration-300">
-                    <div class="w-12 h-12 rounded-full bg-green-50 text-green-500 flex items-center justify-center text-xl mx-auto">
+                <div id="success-message" class="hidden max-w-sm mx-auto w-full bg-white dark:bg-darkpanel border border-green-200 dark:border-green-800/40 p-6 rounded-3xl text-center space-y-4 shadow-md mt-4 transition-all duration-300 animate-scale-up">
+                    <div class="w-12 h-12 rounded-full bg-green-50 dark:bg-green-950 text-green-500 flex items-center justify-center text-xl mx-auto">
                         ✔
                     </div>
                     <div>
-                        <h3 class="text-sm font-bold text-primary">커피챗 초대장이 성공적으로 전송되었습니다!</h3>
-                        <p class="text-[11px] text-primary/60 mt-1 leading-relaxed">
+                        <h3 class="text-sm font-bold text-primary dark:text-offwhite">커피챗 초대장이 성공적으로 전송되었습니다!</h3>
+                        <p class="text-[11px] text-primary/60 dark:text-warmgray/60 mt-1 leading-relaxed">
                             박미르의 메일함으로 소중한 제안이 날아갔습니다.<br>
                             입력해 주신 회신 통로를 통해 빠른 시일 내에 연락드리겠습니다.
                         </p>
                     </div>
-                    <button onclick="resetInvitationForm()" type="button" class="w-full py-2 bg-primary hover:bg-secondary text-offwhite text-xs font-semibold rounded-xl transition-all">
+                    <button onclick="resetInvitationForm()" type="button" class="w-full py-2 bg-primary dark:bg-accent hover:bg-secondary text-offwhite text-xs font-semibold rounded-xl transition-all">
                         새로 초대장 작성하기
                     </button>
                 </div>
@@ -413,15 +417,15 @@
         </div>
 
         <!-- STYLED BOTTOM VALUE CARD -->
-        <section class="max-w-2xl mx-auto border border-warmgray rounded-3xl p-6 sm:p-8 bg-white shadow-sm text-center space-y-4">
-            <h3 class="text-sm font-extrabold text-primary flex items-center justify-center space-x-1.5">
+        <section class="max-w-2xl mx-auto border border-warmgray dark:border-secondary/40 rounded-3xl p-6 sm:p-8 bg-white dark:bg-darkpanel shadow-sm text-center space-y-4 transition-colors duration-300">
+            <h3 class="text-sm font-extrabold text-primary dark:text-offwhite flex items-center justify-center space-x-1.5">
                 <span>🛸</span>
                 <span>완주를 보장하는 단단한 신뢰의 레이스</span>
             </h3>
-            <p class="text-xs text-primary/70 leading-relaxed max-w-lg mx-auto">
+            <p class="text-xs text-primary/70 dark:text-warmgray/70 leading-relaxed max-w-lg mx-auto">
                 "좋은 대화 상대를 발견하고, 어긋남을 좁혀가며 유쾌하게 협업의 답을 조율해 갈 때 가장 큰 동기부여를 얻습니다. 가벼운 안부 인사부터 무겁고 조밀한 기술 스터디 논의까지, 연락해 주시면 따뜻하고 정돈된 리액션으로 화답해 드리겠습니다."
             </p>
-            <div class="flex items-center justify-center space-x-2 text-[10px] font-mono text-primary/40 pt-2 border-t border-warmgray/50">
+            <div class="flex items-center justify-center space-x-2 text-[10px] font-mono text-primary/40 dark:text-warmgray/45 pt-2 border-t border-warmgray/50 dark:border-secondary/20">
                 <span>Computer Software Engineering Dept</span>
                 <span>•</span>
                 <span>Mir Park</span>
@@ -431,7 +435,7 @@
     </main>
 
     <!-- Minimalist Footer -->
-    <footer class="bg-primary text-offwhite border-t border-secondary/40 py-12">
+    <footer class="bg-primary dark:bg-[#03060c] text-offwhite border-t border-secondary/40 py-12 transition-colors duration-300">
         <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="space-y-1 text-center md:text-left">
                 <a href="index.html" class="text-sm font-bold tracking-tight">PARK MIR.</a>
@@ -449,6 +453,9 @@
         let selectedTopicEmoji = "📝";
         let selectedBeverage = "아메리카노";
         let selectedBeverageEmoji = "☕";
+        
+        // Gamification click counters
+        let americanoClickCount = 0;
 
         // Form selection callbacks
         function setTopic(element, topicName, emoji) {
@@ -457,9 +464,9 @@
             
             // Visual indicators swap
             document.querySelectorAll('.topic-btn').forEach(btn => {
-                btn.classList.remove('border-primary', 'bg-primary/5');
+                btn.classList.remove('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15');
             });
-            element.classList.add('border-primary', 'bg-primary/5');
+            element.classList.add('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15');
 
             updateTicketPreview();
         }
@@ -470,11 +477,43 @@
 
             // Visual indicators swap
             document.querySelectorAll('.beverage-btn').forEach(btn => {
-                btn.classList.remove('border-primary', 'bg-primary/5');
+                btn.classList.remove('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15');
             });
-            element.classList.add('border-primary', 'bg-primary/5');
+            element.classList.add('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15');
 
             updateTicketPreview();
+
+            // Gamification Logic: Track Americano clicks
+            if (bevName === '아메리카노') {
+                americanoClickCount++;
+                if (americanoClickCount === 10) {
+                    showEasterEgg();
+                }
+            } else {
+                // 아메리카노 이외의 음료 클릭 시 연타 수 초기화 (연속 클릭 난이도 상향)
+                americanoClickCount = 0;
+            }
+        }
+
+        // Easter Egg popup triggers (Modal-based, No Alert)
+        function showEasterEgg() {
+            const modal = document.getElementById('easter-egg-modal');
+            modal.classList.remove('hidden');
+            // 마이크로 팝업 탄성감 연출
+            setTimeout(() => {
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }, 50);
+        }
+
+        function closeEasterEgg() {
+            const modal = document.getElementById('easter-egg-modal');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+            americanoClickCount = 0; // 초기화
         }
 
         function updateMessage() {
@@ -538,12 +577,12 @@
                     // Create inline temporary success indicator near copy button
                     const originHtml = btnElement.innerHTML;
                     btnElement.innerHTML = "<span>✅ 클립보드에 복사 완료!</span>";
-                    btnElement.classList.remove('text-primary');
-                    btnElement.classList.add('bg-green-50', 'text-green-600', 'border-green-300');
+                    btnElement.classList.remove('text-primary', 'dark:text-offwhite');
+                    btnElement.classList.add('bg-green-50', 'dark:bg-green-950', 'text-green-600', 'dark:text-green-400', 'border-green-300');
                     setTimeout(() => {
                         btnElement.innerHTML = originHtml;
-                        btnElement.classList.add('text-primary');
-                        btnElement.classList.remove('bg-green-50', 'text-green-600', 'border-green-300');
+                        btnElement.classList.add('text-primary', 'dark:text-offwhite');
+                        btnElement.classList.remove('bg-green-50', 'dark:bg-green-950', 'text-green-600', 'dark:text-green-400', 'border-green-300');
                     }, 2000);
                 }
             } catch (err) {
@@ -579,12 +618,12 @@
             document.getElementById('sender-text').value = "";
 
             // Reset button swap
-            document.querySelectorAll('.topic-btn').forEach(btn => btn.classList.remove('border-primary', 'bg-primary/5'));
-            document.querySelectorAll('.beverage-btn').forEach(btn => btn.classList.remove('border-primary', 'bg-primary/5'));
+            document.querySelectorAll('.topic-btn').forEach(btn => btn.classList.remove('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15'));
+            document.querySelectorAll('.beverage-btn').forEach(btn => btn.classList.remove('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15'));
             
             // Re-apply defaults
-            document.getElementById('topic-default').classList.add('border-primary', 'bg-primary/5');
-            document.getElementById('beverage-default').classList.add('border-primary', 'bg-primary/5');
+            document.getElementById('topic-default').classList.add('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15');
+            document.getElementById('beverage-default').classList.add('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15');
 
             selectedTopic = "알고리즘 스터디";
             selectedTopicEmoji = "📝";
@@ -598,12 +637,33 @@
             successMessage.classList.add('hidden');
         }
 
-        // Trigger default selections visually on page load
+        // Dark Mode Logic
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Trigger default selections and saved theme on page load
         document.addEventListener('DOMContentLoaded', () => {
+            // Apply theme preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+
             const topicDefault = document.getElementById('topic-default');
             const beverageDefault = document.getElementById('beverage-default');
-            if (topicDefault) topicDefault.classList.add('border-primary', 'bg-primary/5');
-            if (beverageDefault) beverageDefault.classList.add('border-primary', 'bg-primary/5');
+            if (topicDefault) topicDefault.classList.add('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15');
+            if (beverageDefault) beverageDefault.classList.add('border-primary', 'bg-primary/5', 'dark:border-accent', 'dark:bg-secondary/15');
             updateTicketPreview();
         });
     </script>

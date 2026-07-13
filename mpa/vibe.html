@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>취향과 에세이 | 러닝메이트 박미르</title>
     <!-- Pretendard 고해상도 한글 본문 폰트 적용 -->
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -17,6 +18,9 @@
                         offwhite: '#FAF9F5',   // 오프 화이트
                         warmgray: '#EAE7E1',   // 따뜻한 그레이
                         accent: '#E07A5F',     // 담백한 오렌지/레드
+                        darkbg: '#030811',     // 다크모드 메인 배경
+                        darkpanel: '#081325',  // 다크모드 카드 패널 배경
+                        darkinput: '#0c1b33',  // 다크모드 입력 폼 배경
                     },
                     fontFamily: {
                         sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
@@ -28,174 +32,11 @@
     <style>
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: #FAF9F5;
         }
         /* 드롭다운 메뉴 부드러운 트랜지션용 커스텀 스타일 */
         .mobile-menu-transition {
             transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-in-out;
         }
-    </style>
-</head>
-<body class="min-h-screen bg-offwhite/50 overflow-x-hidden">
-
-    <!-- ==========================================
-         [복사 시작 영역] 공통 네비게이션 바 컴포넌트 
-         ========================================== -->
-    <header class="fixed top-0 left-0 w-full z-50 bg-offwhite/90 backdrop-blur-md border-b border-warmgray/40 transition-all duration-300">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between relative">
-            
-            <!-- 로고 및 홈 링크 -->
-            <a href="index.html" class="flex items-center space-x-2 text-primary font-bold tracking-tight text-sm select-none">
-                <span class="w-2.5 h-2.5 bg-primary rounded-full inline-block"></span>
-                <span>PARK MIR.</span>
-            </a>
-
-            <!-- 데스크톱 메뉴 링크 (화면 크기 md 이상에서 표시됨) -->
-            <!-- * 여러 페이지 파일로 연동 시 각각 index.html, about.html, synergy.html 등으로 경로를 직접 편집하여 사용 가능합니다. -->
-            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-primary/70">
-                <a href="index.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
-                    소개
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
-                </a>
-                <a href="synergy.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
-                    5대 협업 시너지
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
-                </a>
-                <a href="vibe.html" class="text-primary transition-colors duration-200 relative py-1 group">
-                    취향과 에세이
-                    <span class="absolute bottom-0 left-0.5 w-full h-0.5 bg-primary"></span>
-                </a>
-                <a href="contact.html" class="hover:text-primary transition-colors duration-200 relative py-1 group">
-                    연락하기
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
-                </a>
-            </nav>
-
-            <!-- 우측 행동 유도 버튼 (커피챗 제안) -->
-            <div class="hidden md:block">
-                <a href="contact.html" class="px-4 py-2 bg-primary text-offwhite rounded-lg text-xs font-semibold hover:bg-secondary transition-all duration-200 shadow-sm active:scale-95">
-                    커피챗 제안하기
-                </a>
-            </div>
-
-            <!-- 모바일용 햄버거 메뉴 버튼 (화면 크기 md 미만에서 표시됨) -->
-            <div class="flex items-center md:hidden">
-                <button id="mobile-menu-btn" type="button" class="text-primary hover:text-secondary focus:outline-none p-2 rounded-lg hover:bg-primary/5 transition-colors" aria-label="메뉴 열기" aria-expanded="false">
-                    <svg class="w-6 h-6 transition-transform duration-300" id="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <!-- 햄버거 상단 라인 -->
-                        <path id="line1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" class="origin-center transition-transform duration-200"></path>
-                        <!-- 햄버거 중단 라인 -->
-                        <path id="line2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" class="transition-opacity duration-200"></path>
-                        <!-- 햄버거 하단 라인 -->
-                        <path id="line3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16" class="origin-center transition-transform duration-200"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- 모바일 드롭다운 메뉴 (기본 닫힘 상태) -->
-        <div id="mobile-menu" class="md:hidden max-h-0 opacity-0 overflow-hidden bg-offwhite border-b border-warmgray/40 mobile-menu-transition">
-            <div class="px-6 py-4 space-y-3.5 flex flex-col text-xs font-semibold text-primary/80">
-                <a href="index.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
-                    <span>소개</span>
-                    <span class="text-primary/30">→</span>
-                </a>
-                <a href="synergy.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
-                    <span>5대 협업 시너지</span>
-                    <span class="text-primary/30">→</span>
-                </a>
-                <a href="vibe.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
-                    <span>취향과 에세이</span>
-                    <span class="text-primary/30">→</span>
-                </a>
-                <a href="contact.html" class="py-2.5 border-b border-warmgray/20 hover:text-primary transition-colors flex items-center justify-between">
-                    <span>연락하기</span>
-                    <span class="text-primary/30">→</span>
-                </a>
-                <div class="pt-2">
-                    <a href="contact.html" class="w-full py-3 bg-primary text-offwhite rounded-xl text-center font-bold shadow-sm hover:bg-secondary transition-colors block">
-                        💌 커피챗 제안하기
-                    </a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            // 햄버거 메뉴 각 라인 엘리먼트 (아이콘 X 변환용)
-            const line1 = document.getElementById('line1');
-            const line2 = document.getElementById('line2');
-            const line3 = document.getElementById('line3');
-
-            let isMenuOpen = false;
-
-            function toggleMenu() {
-                isMenuOpen = !isMenuOpen;
-                
-                // 버튼 웹 접근성 사양 적용
-                menuBtn.setAttribute('aria-expanded', isMenuOpen);
-
-                if (isMenuOpen) {
-                    // 메뉴 열기
-                    mobileMenu.classList.remove('max-h-0', 'opacity-0');
-                    mobileMenu.classList.add('max-h-[380px]', 'opacity-100');
-                    
-                    // 햄버거 아이콘 -> X자로 변경 애니메이션
-                    line1.setAttribute('transform', 'rotate(45 12 12) translate(0 0)');
-                    line1.setAttribute('d', 'M6 6l12 12');
-                    line2.style.opacity = '0';
-                    line3.setAttribute('transform', 'rotate(-45 12 12) translate(0 0)');
-                    line3.setAttribute('d', 'M6 18L18 6');
-                } else {
-                    // 메뉴 닫기
-                    mobileMenu.classList.remove('max-h-[380px]', 'opacity-100');
-                    mobileMenu.classList.add('max-h-0', 'opacity-0');
-                    
-                    // X자 -> 원래 햄버거 아이콘으로 환원
-                    line1.removeAttribute('transform');
-                    line1.setAttribute('d', 'M4 6h16');
-                    line2.style.opacity = '1';
-                    line3.removeAttribute('transform');
-                    line3.setAttribute('d', 'M4 18h16');
-                }
-            }
-
-            // 터치 및 클릭 이벤트 리스너 등록
-            menuBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                toggleMenu();
-            });
-
-            // 메뉴 외부를 터치/클릭할 경우 활성화된 모바일 메뉴를 부드럽게 닫는 보강 로직
-            document.addEventListener('click', function (event) {
-                if (isMenuOpen && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
-                    toggleMenu();
-                }
-            });
-
-            // 모바일 메뉴 링크 터치/클릭 시에도 닫히도록 지원
-            const mobileLinks = mobileMenu.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (isMenuOpen) toggleMenu();
-                });
-            });
-        });
-    </script>
-    <!-- ==========================================
-         [복사 끝 영역] 공통 네비게이션 바 컴포넌트 
-         ========================================== -->
-
-    <style>
-        /* 네비게이션 컴포넌트 데모 배경 강제 숨김 */
-        .pointer-events-none.absolute.inset-0.z-0 {
-            display: none !important;
-        }
-
         /* LP 회전 키프레임 */
         @keyframes spin {
             from { transform: rotate(0deg); }
@@ -225,18 +66,164 @@
         .eq-bar:nth-child(7) { animation-delay: 0.4s; }
         .eq-bar:nth-child(8) { animation-delay: 0.2s; }
     </style>
+</head>
+<body class="min-h-screen bg-offwhite/50 dark:bg-darkbg text-primary dark:text-offwhite overflow-x-hidden transition-colors duration-300">
+
+    <!-- ==========================================
+         [복사 시작 영역] 공통 네비게이션 바 컴포넌트 
+         ========================================== -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-offwhite/90 dark:bg-darkbg/90 backdrop-blur-md border-b border-warmgray/40 dark:border-secondary/30 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between relative">
+            
+            <!-- 로고 및 홈 링크 -->
+            <a href="index.html" class="flex items-center space-x-2 text-primary dark:text-offwhite font-bold tracking-tight text-sm select-none">
+                <span class="w-2.5 h-2.5 bg-primary dark:bg-accent rounded-full inline-block"></span>
+                <span>PARK MIR.</span>
+            </a>
+
+            <!-- 데스크톱 메뉴 링크 -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-primary/70 dark:text-warmgray/70">
+                <a href="index.html" class="hover:text-primary dark:hover:text-offwhite transition-colors duration-200 relative py-1 group">
+                    소개
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary dark:bg-accent transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="synergy.html" class="hover:text-primary dark:hover:text-offwhite transition-colors duration-200 relative py-1 group">
+                    5대 협업 시너지
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary dark:bg-accent transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="vibe.html" class="text-primary dark:text-offwhite transition-colors duration-200 relative py-1 group">
+                    취향과 에세이
+                    <span class="absolute bottom-0 left-0.5 w-full h-0.5 bg-primary dark:bg-accent"></span>
+                </a>
+                <a href="contact.html" class="hover:text-primary dark:hover:text-offwhite transition-colors duration-200 relative py-1 group">
+                    연락하기
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary dark:bg-accent transition-all duration-200 group-hover:w-full"></span>
+                </a>
+            </nav>
+
+            <!-- 우측 행동 유도 및 테마 토글 버튼 -->
+            <div class="hidden md:flex items-center space-x-4">
+                <!-- 테마 토글 버튼 (데스크톱) -->
+                <button onclick="toggleTheme()" class="p-2 rounded-xl bg-warmgray/30 dark:bg-secondary/40 hover:bg-warmgray/50 dark:hover:bg-secondary/60 transition-all text-sm active:scale-95 focus:outline-none" aria-label="테마 전환">
+                    <span class="dark:hidden">🌙</span>
+                    <span class="hidden dark:inline">☀️</span>
+                </button>
+                <a href="contact.html" class="px-4 py-2 bg-primary dark:bg-accent text-offwhite rounded-lg text-xs font-semibold hover:bg-secondary dark:hover:bg-accent/80 transition-all duration-200 shadow-sm active:scale-95">
+                    커피챗 제안하기
+                </a>
+            </div>
+
+            <!-- 모바일용 메뉴 헤더 섹션 (햄버거 & 모바일 다크토글) -->
+            <div class="flex items-center space-x-2 md:hidden">
+                <!-- 테마 토글 버튼 (모바일) -->
+                <button onclick="toggleTheme()" class="p-2 rounded-xl bg-warmgray/30 dark:bg-secondary/40 hover:bg-warmgray/50 dark:hover:bg-secondary/60 transition-all text-xs active:scale-95 focus:outline-none" aria-label="테마 전환">
+                    <span class="dark:hidden">🌙</span>
+                    <span class="hidden dark:inline">☀️</span>
+                </button>
+                <button id="mobile-menu-btn" type="button" class="text-primary dark:text-offwhite hover:text-secondary focus:outline-none p-2 rounded-lg hover:bg-primary/5 transition-colors" aria-label="메뉴 열기" aria-expanded="false">
+                    <svg class="w-6 h-6 transition-transform duration-300" id="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path id="line1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" class="origin-center transition-transform duration-200"></path>
+                        <path id="line2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" class="transition-opacity duration-200"></path>
+                        <path id="line3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16" class="origin-center transition-transform duration-200"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 모바일 드롭다운 메뉴 -->
+        <div id="mobile-menu" class="md:hidden max-h-0 opacity-0 overflow-hidden bg-offwhite dark:bg-darkpanel border-b border-warmgray/40 dark:border-secondary/30 mobile-menu-transition">
+            <div class="px-6 py-4 space-y-3.5 flex flex-col text-xs font-semibold text-primary/80 dark:text-warmgray/90">
+                <a href="index.html" class="py-2.5 border-b border-warmgray/20 dark:border-secondary/20 hover:text-primary dark:hover:text-offwhite transition-colors flex items-center justify-between">
+                    <span>소개</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="synergy.html" class="py-2.5 border-b border-warmgray/20 dark:border-secondary/20 hover:text-primary dark:hover:text-offwhite transition-colors flex items-center justify-between">
+                    <span>5대 협업 시너지</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="vibe.html" class="py-2.5 border-b border-warmgray/20 dark:border-secondary/20 hover:text-primary dark:hover:text-offwhite transition-colors flex items-center justify-between">
+                    <span>취향과 에세이</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <a href="contact.html" class="py-2.5 border-b border-warmgray/20 dark:border-secondary/20 hover:text-primary dark:hover:text-offwhite transition-colors flex items-center justify-between">
+                    <span>연락하기</span>
+                    <span class="text-primary/30">→</span>
+                </a>
+                <div class="pt-2">
+                    <a href="contact.html" class="w-full py-3 bg-primary dark:bg-accent text-offwhite rounded-xl text-center font-bold shadow-sm hover:bg-secondary dark:hover:bg-accent/80 transition-colors block">
+                        💌 커피챗 제안하기
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const line1 = document.getElementById('line1');
+            const line2 = document.getElementById('line2');
+            const line3 = document.getElementById('line3');
+
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                menuBtn.setAttribute('aria-expanded', isMenuOpen);
+
+                if (isMenuOpen) {
+                    mobileMenu.classList.remove('max-h-0', 'opacity-0');
+                    mobileMenu.classList.add('max-h-[380px]', 'opacity-100');
+                    line1.setAttribute('transform', 'rotate(45 12 12) translate(0 0)');
+                    line1.setAttribute('d', 'M6 6l12 12');
+                    line2.style.opacity = '0';
+                    line3.setAttribute('transform', 'rotate(-45 12 12) translate(0 0)');
+                    line3.setAttribute('d', 'M6 18L18 6');
+                } else {
+                    mobileMenu.classList.remove('max-h-[380px]', 'opacity-100');
+                    mobileMenu.classList.add('max-h-0', 'opacity-0');
+                    line1.removeAttribute('transform');
+                    line1.setAttribute('d', 'M4 6h16');
+                    line2.style.opacity = '1';
+                    line3.removeAttribute('transform');
+                    line3.setAttribute('d', 'M4 18h16');
+                }
+            }
+
+            menuBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            document.addEventListener('click', function (event) {
+                if (isMenuOpen && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
+    <!-- ==========================================
+         [복사 끝 영역] 공통 네비게이션 바 컴포넌트 
+         ========================================== -->
+
+    <style>
+        .pointer-events-none.absolute.inset-0.z-0 {
+            display: none !important;
+        }
+    </style>
 
     <main class="pt-28 pb-20 px-6 max-w-6xl mx-auto">
         
         <!-- Page Title & Concept Header -->
         <header class="text-center space-y-4 mb-16">
-            <span class="inline-flex items-center space-x-2 bg-primary/5 border border-primary/10 px-3.5 py-1 rounded-full text-[10px] font-bold text-primary tracking-widest uppercase">
+            <span class="inline-flex items-center space-x-2 bg-primary/5 dark:bg-secondary/20 border border-primary/10 dark:border-secondary/30 px-3.5 py-1 rounded-full text-[10px] font-bold text-primary dark:text-accent tracking-widest uppercase">
                 🎧 Taste & Digging Essay
             </span>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
-                소리의 원형을 쫓는 집요함, 디깅 취향
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-primary dark:text-offwhite tracking-tight">
+                소리의 원형을 쫓는 집요함, 박미르의 디깅 취향
             </h1>
-            <p class="text-xs sm:text-sm text-primary/70 max-w-2xl mx-auto leading-relaxed font-normal">
+            <p class="text-xs sm:text-sm text-primary/70 dark:text-warmgray/75 max-w-2xl mx-auto leading-relaxed font-normal">
                 익숙한 일상의 멜로디 이면에 숨겨진 아름다운 오리지널 샘플을 찾아 떠납니다.<br class="hidden sm:inline">
                 스펙트럼 넓은 귀로 수집한 음악적 영감들이 문제의 본질을 파헤치는 집요함으로 치환되는 순간을 공유합니다.
             </p>
@@ -247,15 +234,15 @@
             
             <!-- Left Grid: Essay Text -->
             <section class="lg:col-span-7 space-y-6">
-                <div class="bg-white border border-warmgray/60 p-8 rounded-3xl shadow-sm space-y-5">
-                    <h2 class="text-lg font-bold text-primary tracking-tight flex items-center space-x-2">
+                <div class="bg-white dark:bg-darkpanel border border-warmgray/60 dark:border-secondary/40 p-8 rounded-3xl shadow-sm space-y-5">
+                    <h2 class="text-lg font-bold text-primary dark:text-offwhite tracking-tight flex items-center space-x-2">
                         <span>🐈</span>
                         <span>'빌려온 고양이 (Do the Dance)'에서 마주한 호기심</span>
                     </h2>
                     
-                    <div class="text-xs sm:text-sm text-primary/80 leading-relaxed space-y-4 font-normal">
+                    <div class="text-xs sm:text-sm text-primary/80 dark:text-warmgray/80 leading-relaxed space-y-4 font-normal">
                         <p>
-                            아일릿(ILLIT)의 곡 <strong class="text-primary font-semibold">'빌려온 고양이 (Do the Dance)'</strong>는 일본 애니메이션 <strong class="text-secondary font-semibold">&lt;더 파이브 스타 스토리&gt;</strong>의 OST인 <strong class="text-secondary font-semibold">'우아한 탈주'</strong>를 샘플링한 몽환적인 스트링 테마가 특징입니다. 이 샘플링을 통해 퓨처 펑크의 무드를 케이팝에 로맨틱하게 녹여냈습니다.
+                            아일릿(ILLIT)의 곡 <strong class="text-primary dark:text-accent font-semibold">'빌려온 고양이 (Do the Dance)'</strong>는 일본 애니메이션 <strong class="text-secondary dark:text-offwhite font-semibold">&lt;더 파이브 스타 스토리&gt;</strong>의 OST인 <strong class="text-secondary dark:text-offwhite font-semibold">'우아한 탈주'</strong>를 샘플링한 몽환적인 스트링 테마가 특징입니다. 이 샘플링을 통해 퓨처 펑크의 무드를 케이팝에 로맨틱하게 녹여냈습니다.
                         </p>
                         <p>
                             그저 무심히 지나칠 수 있는 상큼한 비트라인 이면에, 약 37년 전에 발매된 고전 로봇 메카닉 극장판 애니메이션 스코어의 감동을 다시 겹쳐 올린 치밀한 음악 공학적 설계가 숨어 있었던 셈입니다. 이러한 '기원의 탐험'은 제 플레이리스트를 거꾸로 뒤집고 사운드 아카이브를 꼬리에 꼬리를 물며 집요하게 깊어지게 만듭니다.
@@ -263,7 +250,7 @@
                         <p>
                             이 디깅 습관은 제 음악 감상의 스펙트럼을 넓게 조율해 줍니다. 인디 밴드의 거친 베이스라인, J-pop 건반 선율의 화려함, 외국 힙합의 과감한 드럼 슬라이싱, 올드팝 진공관 스피커의 따뜻한 배음, 시티팝의 청량한 신디사이저 편곡까지 어떤 카테고리도 제한하지 않고 귀에 담습니다. 각 사운드가 탄생하고 발전해 온 궤적을 확인하는 것은 저에게 가장 즐거운 영감의 축적입니다.
                         </p>
-                        <p class="border-t border-warmgray/50 pt-4 text-xs text-primary/60 italic">
+                        <p class="border-t border-warmgray/50 dark:border-secondary/30 pt-4 text-xs text-primary/60 dark:text-warmgray/50 italic">
                             "알고 보면 이 호기심은 개발을 대하는 저의 태도와 아주 닮아 있습니다. 화면에 무심하게 나타난 마이너 버그나 정의되지 않은 기획의 빈틈을 발견했을 때, 가볍게 우회하는 대신 그 소스코드와 라이브러리의 깊은 구조 속 원형을 끝까지 디깅하여 해결해 내고야 마는 집요함. 그것이 제가 팀에 전하는 진짜 시너지입니다."
                         </p>
                     </div>
@@ -272,13 +259,13 @@
 
             <!-- Right Grid: Virtual LP Player Widget -->
             <aside class="lg:col-span-5 flex flex-col items-center">
-                <div class="bg-primary text-offwhite w-full rounded-3xl p-6 shadow-xl space-y-6 border border-secondary/50 relative overflow-hidden">
+                <div class="bg-primary dark:bg-[#0c1b33] text-offwhite w-full rounded-3xl p-6 shadow-xl space-y-6 border border-secondary/50 relative overflow-hidden">
                     
                     <!-- Decorative Light Grid Background -->
                     <div class="absolute inset-0 bg-[radial-gradient(#134074_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none"></div>
 
                     <!-- Player Screen Header -->
-                    <div class="flex items-center justify-between border-b border-secondary pb-3 relative z-10">
+                    <div class="flex items-center justify-between border-b border-secondary/40 pb-3 relative z-10">
                         <div class="flex items-center space-x-2">
                             <span class="w-2.5 h-2.5 bg-accent rounded-full animate-ping"></span>
                             <span class="text-[10px] font-mono tracking-widest text-warmgray/50 uppercase">LP VIBE PLAYER</span>
@@ -309,7 +296,7 @@
 
                         <!-- Metal Tonearm Needle Structure -->
                         <div id="tonearm" class="absolute top-0 right-4 w-12 h-32 origin-top-right transition-transform duration-700 transform rotate-[-28deg] pointer-events-none z-30">
-                            <!-- Arm Silhouette (SVG line mimics premium tonearm) -->
+                            <!-- Arm Silhouette -->
                             <svg class="w-full h-full" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M90 10 L40 50 L35 150 L20 170" stroke="#EAE7E1" stroke-width="4" stroke-linecap="round"/>
                                 <circle cx="90" cy="10" r="12" fill="#EAE7E1"/>
@@ -356,9 +343,9 @@
         <!-- Deep Content Section: Sampling Heritage Library -->
         <section class="space-y-8 mb-20">
             <div class="text-center space-y-2">
-                <span class="text-[9px] font-bold text-accent tracking-widest uppercase bg-accent/5 px-3 py-1 rounded-full">Heritage Digging Gallery</span>
-                <h2 class="text-xl sm:text-2xl font-bold text-primary tracking-tight">음악 역사 속의 놀라운 샘플링 명곡들</h2>
-                <p class="text-xs text-primary/60 max-w-xl mx-auto font-normal">
+                <span class="text-[9px] font-bold text-accent tracking-widest uppercase bg-accent/5 dark:bg-secondary/20 px-3 py-1 rounded-full">Heritage Digging Gallery</span>
+                <h2 class="text-xl sm:text-2xl font-bold text-primary dark:text-offwhite tracking-tight">음악 역사 속의 놀라운 샘플링 명곡들</h2>
+                <p class="text-xs text-primary/60 dark:text-warmgray/70 max-w-xl mx-auto font-normal">
                     기존의 유산을 가볍게 여기지 않고, 해체하고 재구성하여 완전히 새로운 가치로 빚어내는 창조적 탐구의 결과물을 확인하세요.
                 </p>
             </div>
@@ -367,54 +354,54 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
                 <!-- Card 1: ILLIT -->
-                <article class="bg-white border border-warmgray p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow">
+                <article class="bg-white dark:bg-darkpanel border border-warmgray dark:border-secondary/40 p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-mono text-accent bg-accent/5 px-2 py-0.5 rounded-full font-bold">Future Funk / K-pop</span>
+                            <span class="text-[10px] font-mono text-accent bg-accent/5 dark:bg-secondary/20 px-2 py-0.5 rounded-full font-bold">Future Funk / K-pop</span>
                             <span class="text-xs">🐈</span>
                         </div>
-                        <h3 class="text-sm font-bold text-primary">아일릿 - 빌려온 고양이 (Do the Dance)</h3>
-                        <p class="text-xs text-primary/70 leading-relaxed font-normal">
+                        <h3 class="text-sm font-bold text-primary dark:text-offwhite">아일릿 - 빌려온 고양이 (Do the Dance)</h3>
+                        <p class="text-xs text-primary/70 dark:text-warmgray/70 leading-relaxed font-normal">
                             1989년의 감성 충만한 극장판 메카닉 애니메이션 &lt;더 파이브 스타 스토리&gt;의 중심 사운드 '우아한 탈주' 속 서정적 스트링 리프를 슬라이싱하여 현대적인 복고 펑크 무드로 환생시켰습니다. 클래식 아날로그 사운드의 탁월한 오마주입니다.
                         </p>
                     </div>
-                    <div class="border-t border-warmgray/40 pt-4 mt-6 flex items-center justify-between text-[10px] font-mono text-primary/45">
+                    <div class="border-t border-warmgray/40 dark:border-secondary/30 pt-4 mt-6 flex items-center justify-between text-[10px] font-mono text-primary/45 dark:text-warmgray/40">
                         <span>Original: 우아한 탈주 (1989)</span>
                         <span>Track: 01</span>
                     </div>
                 </article>
 
                 <!-- Card 2: Daft Punk -->
-                <article class="bg-white border border-warmgray p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow">
+                <article class="bg-white dark:bg-darkpanel border border-warmgray dark:border-secondary/40 p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-mono text-primary bg-primary/5 px-2 py-0.5 rounded-full font-bold">House / Electro</span>
+                            <span class="text-[10px] font-mono text-primary dark:text-accent bg-primary/5 dark:bg-accent/20 px-2 py-0.5 rounded-full font-bold">House / Electro</span>
                             <span class="text-xs">🤖</span>
                         </div>
-                        <h3 class="text-sm font-bold text-primary">Daft Punk - One More Time</h3>
-                        <p class="text-xs text-primary/70 leading-relaxed font-normal">
+                        <h3 class="text-sm font-bold text-primary dark:text-offwhite">Daft Punk - One More Time</h3>
+                        <p class="text-xs text-primary/70 dark:text-warmgray/70 leading-relaxed font-normal">
                             1979년 발표된 에디 존스(Eddie Johns)의 'More Spell On You'라는 잊힌 혼 섹션(Horn loop)을 현미경 보듯 조각내고 조립하여 하우스 역사상 최고의 댄스 앤섬을 만들었습니다. 고정관념을 뛰어넘은 집요한 조각 재배열의 극치입니다.
                         </p>
                     </div>
-                    <div class="border-t border-warmgray/40 pt-4 mt-6 flex items-center justify-between text-[10px] font-mono text-primary/45">
+                    <div class="border-t border-warmgray/40 dark:border-secondary/30 pt-4 mt-6 flex items-center justify-between text-[10px] font-mono text-primary/45 dark:text-warmgray/40">
                         <span>Original: Eddie Johns (1979)</span>
                         <span>Track: 02</span>
                     </div>
                 </article>
 
                 <!-- Card 3: Nujabes -->
-                <article class="bg-white border border-warmgray p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow">
+                <article class="bg-white dark:bg-darkpanel border border-warmgray dark:border-secondary/40 p-6 rounded-2xl flex flex-col justify-between hover:shadow-md transition-shadow">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-mono text-secondary bg-secondary/5 px-2 py-0.5 rounded-full font-bold">Jazzy Hip-Hop</span>
+                            <span class="text-[10px] font-mono text-secondary dark:text-warmgray/80 bg-secondary/5 dark:bg-secondary/20 px-2 py-0.5 rounded-full font-bold">Jazzy Hip-Hop</span>
                             <span class="text-xs">🕊️</span>
                         </div>
-                        <h3 class="text-sm font-bold text-primary">Nujabes - Feather</h3>
-                        <p class="text-xs text-primary/70 leading-relaxed font-normal">
+                        <h3 class="text-sm font-bold text-primary dark:text-offwhite">Nujabes - Feather</h3>
+                        <p class="text-xs text-primary/70 dark:text-warmgray/70 leading-relaxed font-normal">
                             재즈 오보에 연주자 유세프 라티프(Yusef Lateef)의 연주곡 중 잔잔하고 영적인 피아노 파트를 절묘하게 잘라내어 아름다운 재즈 힙합의 초석을 세웠습니다. 아무나 알아채기 힘든 클래식 재즈 넘버에서 보석 같은 순간을 집요하게 건져낸 명작입니다.
                         </p>
                     </div>
-                    <div class="border-t border-warmgray/40 pt-4 mt-6 flex items-center justify-between text-[10px] font-mono text-primary/45">
+                    <div class="border-t border-warmgray/40 dark:border-secondary/30 pt-4 mt-6 flex items-center justify-between text-[10px] font-mono text-primary/45 dark:text-warmgray/40">
                         <span>Original: Yusef Lateef (1973)</span>
                         <span>Track: 03</span>
                     </div>
@@ -424,13 +411,13 @@
         </section>
 
         <!-- Wide Spectrum Section -->
-        <section class="bg-white border border-warmgray rounded-3xl p-8 sm:p-12 shadow-sm">
+        <section class="bg-white dark:bg-darkpanel border border-warmgray dark:border-secondary/40 rounded-3xl p-8 sm:p-12 shadow-sm">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 
                 <div class="lg:col-span-5 space-y-4">
-                    <span class="text-[10px] font-bold text-primary tracking-widest bg-primary/5 px-2.5 py-0.5 rounded-full uppercase">Genre Spectrum</span>
-                    <h3 class="text-lg font-bold text-primary">경계가 없는 박미르의 소리 아카이브</h3>
-                    <p class="text-xs text-primary/70 leading-relaxed font-normal">
+                    <span class="text-[10px] font-bold text-primary dark:text-accent tracking-widest bg-primary/5 dark:bg-secondary/20 px-2.5 py-0.5 rounded-full uppercase">Genre Spectrum</span>
+                    <h3 class="text-lg font-bold text-primary dark:text-offwhite">경계가 없는 박미르의 소리 아카이브</h3>
+                    <p class="text-xs text-primary/70 dark:text-warmgray/75 leading-relaxed font-normal">
                         인디, J-pop, 외국 힙합, 팝송, 올드팝, 시티팝까지. 저는 좋은 멜로디와 사운드의 매력이 담겨 있다면 어떠한 카테고리도 제한하지 않고 귀를 기울입니다.<br class="hidden md:inline">
                         서로 다른 갈래의 음악적 아이디어가 조화를 이루어, 개발자로서 복잡한 인터랙션을 연출할 때 뜻밖의 세련된 영감으로 살아납니다.
                     </p>
@@ -440,45 +427,45 @@
                 <div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-3.5">
                     
                     <!-- Tag 1: Indie -->
-                    <div class="p-4 bg-offwhite border border-warmgray/60 rounded-2xl hover:border-primary/30 hover:shadow-sm transition-all group cursor-default">
+                    <div class="p-4 bg-offwhite dark:bg-darkinput border border-warmgray/60 dark:border-secondary/30 rounded-2xl hover:border-primary/30 dark:hover:border-accent hover:shadow-sm transition-all group cursor-default">
                         <div class="text-sm">🎸</div>
-                        <h4 class="text-xs font-bold text-primary mt-2">인디 (Indie)</h4>
-                        <p class="text-[10px] text-primary/60 mt-1 leading-relaxed">거칠지만 꾸밈없는 로우파이적 개성과 솔직한 멜로디의 힘.</p>
+                        <h4 class="text-xs font-bold text-primary dark:text-offwhite mt-2">인디 (Indie)</h4>
+                        <p class="text-[10px] text-primary/60 dark:text-warmgray/50 mt-1 leading-relaxed">거칠지만 꾸밈없는 로우파이적 개성과 솔직한 멜로디의 힘.</p>
                     </div>
 
                     <!-- Tag 2: J-Pop -->
-                    <div class="p-4 bg-offwhite border border-warmgray/60 rounded-2xl hover:border-primary/30 hover:shadow-sm transition-all group cursor-default">
+                    <div class="p-4 bg-offwhite dark:bg-darkinput border border-warmgray/60 dark:border-secondary/30 rounded-2xl hover:border-primary/30 dark:hover:border-accent hover:shadow-sm transition-all group cursor-default">
                         <div class="text-sm">🌸</div>
-                        <h4 class="text-xs font-bold text-primary mt-2">J-pop</h4>
-                        <p class="text-[10px] text-primary/60 mt-1 leading-relaxed">디테일하고 화려한 편곡 속에서도 서정성을 놓치지 않는 정교함.</p>
+                        <h4 class="text-xs font-bold text-primary dark:text-offwhite mt-2">J-pop</h4>
+                        <p class="text-[10px] text-primary/60 dark:text-warmgray/50 mt-1 leading-relaxed">디테일하고 화려한 편곡 속에서도 서정성을 놓치지 않는 정교함.</p>
                     </div>
 
                     <!-- Tag 3: Foreign Hip-hop -->
-                    <div class="p-4 bg-offwhite border border-warmgray/60 rounded-2xl hover:border-primary/30 hover:shadow-sm transition-all group cursor-default">
+                    <div class="p-4 bg-offwhite dark:bg-darkinput border border-warmgray/60 dark:border-secondary/30 rounded-2xl hover:border-primary/30 dark:hover:border-accent hover:shadow-sm transition-all group cursor-default">
                         <div class="text-sm">🎤</div>
-                        <h4 class="text-xs font-bold text-primary mt-2">외국 힙합</h4>
-                        <p class="text-[10px] text-primary/60 mt-1 leading-relaxed">샘플 슬라이싱과 리듬의 한계를 허무는 날것 그대로의 그루브.</p>
+                        <h4 class="text-xs font-bold text-primary dark:text-offwhite mt-2">외국 힙합</h4>
+                        <p class="text-[10px] text-primary/60 dark:text-warmgray/50 mt-1 leading-relaxed">샘플 슬라이싱과 리듬의 한계를 허무는 날것 그대로의 그루브.</p>
                     </div>
 
                     <!-- Tag 4: Pop / Billboard -->
-                    <div class="p-4 bg-offwhite border border-warmgray/60 rounded-2xl hover:border-primary/30 hover:shadow-sm transition-all group cursor-default">
+                    <div class="p-4 bg-offwhite dark:bg-darkinput border border-warmgray/60 dark:border-secondary/30 rounded-2xl hover:border-primary/30 dark:hover:border-accent hover:shadow-sm transition-all group cursor-default">
                         <div class="text-sm">🌟</div>
-                        <h4 class="text-xs font-bold text-primary mt-2">팝송 (Pop)</h4>
-                        <p class="text-[10px] text-primary/60 mt-1 leading-relaxed">대중의 직관을 단숨에 사로잡는 세련되고 정제된 소리의 구조미.</p>
+                        <h4 class="text-xs font-bold text-primary dark:text-offwhite mt-2">팝송 (Pop)</h4>
+                        <p class="text-[10px] text-primary/60 dark:text-warmgray/50 mt-1 leading-relaxed">대중의 직관을 단숨에 사로잡는 세련되고 정제된 소리의 구조미.</p>
                     </div>
 
                     <!-- Tag 5: Old Pop -->
-                    <div class="p-4 bg-offwhite border border-warmgray/60 rounded-2xl hover:border-primary/30 hover:shadow-sm transition-all group cursor-default">
+                    <div class="p-4 bg-offwhite dark:bg-darkinput border border-warmgray/60 dark:border-secondary/30 rounded-2xl hover:border-primary/30 dark:hover:border-accent hover:shadow-sm transition-all group cursor-default">
                         <div class="text-sm">📻</div>
-                        <h4 class="text-xs font-bold text-primary mt-2">올드팝 (Old Pop)</h4>
-                        <p class="text-[10px] text-primary/60 mt-1 leading-relaxed">진공관 오디오 특유의 따뜻하고 묵직한 아날로그 배음의 매력.</p>
+                        <h4 class="text-xs font-bold text-primary dark:text-offwhite mt-2">올드팝 (Old Pop)</h4>
+                        <p class="text-[10px] text-primary/60 dark:text-warmgray/50 mt-1 leading-relaxed">진공관 오디오 특유의 따뜻하고 묵직한 아날로그 배음의 매력.</p>
                     </div>
 
                     <!-- Tag 6: City Pop -->
-                    <div class="p-4 bg-offwhite border border-warmgray/60 rounded-2xl hover:border-primary/30 hover:shadow-sm transition-all group cursor-default">
+                    <div class="p-4 bg-offwhite dark:bg-darkinput border border-warmgray/60 dark:border-secondary/30 rounded-2xl hover:border-primary/30 dark:hover:border-accent hover:shadow-sm transition-all group cursor-default">
                         <div class="text-sm">🌆</div>
-                        <h4 class="text-xs font-bold text-primary mt-2">시티팝 (City Pop)</h4>
-                        <p class="text-[10px] text-primary/60 mt-1 leading-relaxed">산뜻한 드럼앤베이스와 청량한 해 질 녘 도심의 질감.</p>
+                        <h4 class="text-xs font-bold text-primary dark:text-offwhite mt-2">시티팝 (City Pop)</h4>
+                        <p class="text-[10px] text-primary/60 dark:text-warmgray/50 mt-1 leading-relaxed">산뜻한 드럼앤베이스와 청량한 해 질 녘 도심의 질감.</p>
                     </div>
 
                 </div>
@@ -488,8 +475,8 @@
 
         <!-- Bottom Link to Next Step -->
         <div class="mt-20 text-center space-y-4">
-            <h4 class="text-xs font-bold text-primary/50 tracking-widest uppercase">Next Stage</h4>
-            <a href="contact.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-primary text-offwhite text-xs font-bold rounded-xl hover:bg-secondary hover:translate-y-[-2px] transition-all duration-300 shadow-sm active:scale-95">
+            <h4 class="text-xs font-bold text-primary/50 dark:text-warmgray/55 tracking-widest uppercase">Next Stage</h4>
+            <a href="contact.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-primary dark:bg-accent text-offwhite text-xs font-bold rounded-xl hover:bg-secondary dark:hover:bg-accent/80 hover:translate-y-[-2px] transition-all duration-300 shadow-sm active:scale-95">
                 <span>💌 박미르와 함께하는 알고리즘 스터디 & 커피챗 제안하기</span>
                 <span>→</span>
             </a>
@@ -498,7 +485,7 @@
     </main>
 
     <!-- Minimalist Footer -->
-    <footer class="bg-primary text-offwhite border-t border-secondary/40 py-12">
+    <footer class="bg-primary dark:bg-[#03060c] text-offwhite border-t border-secondary/40 py-12 transition-colors duration-300">
         <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="space-y-1 text-center md:text-left">
                 <a href="index.html" class="text-sm font-bold tracking-tight">PARK MIR.</a>
@@ -516,7 +503,6 @@
         let sequenceInterval = null;
         let step = 0;
 
-        // 따뜻하고 서정적인 아날로그 펜타토닉 루프 (F# major pentatonic)
         const notes = [
             293.66, // D4
             329.63, // E4
@@ -528,7 +514,6 @@
             783.99  // G5
         ];
         
-        // 몽환적인 감성 멜로디 시퀀스 맵핑
         const melody = [4, 2, 5, 3, 0, 4, 1, 6, 3, 5, 2, 7, 4, 1, 3, 0];
 
         function initAudio() {
@@ -538,40 +523,34 @@
         function playSynthTone(frequency, duration) {
             if (!audioCtx) return;
 
-            // Oscillator (Triangle Wave for soft flute-like nostalgic tone)
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
 
-            // Low Pass Filter to remove harsh harmonics and give warm retro feeling
             const filter = audioCtx.createBiquadFilter();
             filter.type = 'lowpass';
             filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
             filter.Q.setValueAtTime(1, audioCtx.currentTime);
 
-            // Simple Delay for spatial dreaminess
             const delay = audioCtx.createDelay();
             delay.delayTime.setValueAtTime(0.35, audioCtx.currentTime);
             const feedback = audioCtx.createGain();
             feedback.gain.setValueAtTime(0.4, audioCtx.currentTime);
 
-            // Connections
             osc.connect(gainNode);
             gainNode.connect(filter);
             filter.connect(audioCtx.destination);
             
-            // Connect Delay loop
             filter.connect(delay);
             delay.connect(feedback);
             feedback.connect(delay);
             feedback.connect(audioCtx.destination);
 
-            // Envelope (Soft Attack & Gentle Decay)
             const now = audioCtx.currentTime;
             gainNode.gain.setValueAtTime(0, now);
-            gainNode.gain.linearRampToValueAtTime(0.12, now + 0.1); // Volume set to gentle low level
+            gainNode.gain.linearRampToValueAtTime(0.12, now + 0.1); 
             gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
             osc.start(now);
@@ -579,7 +558,6 @@
         }
 
         function toggleAudio() {
-            // Initialize audio on first click
             if (!audioCtx) {
                 initAudio();
             }
@@ -592,7 +570,6 @@
             const btnText = document.getElementById('btn-audio-text');
 
             if (!isPlaying) {
-                // Resume AudioContext if suspended
                 if (audioCtx.state === 'suspended') {
                     audioCtx.resume();
                 }
@@ -604,12 +581,10 @@
                 btnIcon.innerText = "■";
                 btnText.innerText = "LP 정지하기";
 
-                // Visual Animations Start
                 lpRecord.classList.remove('paused');
-                tonearm.style.transform = "rotate(0deg)"; // Arm moves onto record
+                tonearm.style.transform = "rotate(0deg)";
                 eqBars.forEach(bar => bar.classList.remove('paused'));
 
-                // Play custom procedural music sequence
                 sequenceInterval = setInterval(() => {
                     const noteIndex = melody[step % melody.length];
                     const freq = notes[noteIndex];
@@ -625,15 +600,35 @@
                 btnIcon.innerText = "▶";
                 btnText.innerText = "LP 소리 듣기";
 
-                // Visual Animations Stop
                 lpRecord.classList.add('paused');
-                tonearm.style.transform = "rotate(-28deg)"; // Arm goes back
+                tonearm.style.transform = "rotate(-28deg)";
                 eqBars.forEach(bar => bar.classList.add('paused'));
 
-                // Stop sequencer
                 clearInterval(sequenceInterval);
             }
         }
+
+        // Dark Mode Logic
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
     </script>
 
 </body>
